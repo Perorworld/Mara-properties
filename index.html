@@ -1,575 +1,705 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mara Properties | Premium Real Estate in Abuja</title>
+    <!-- SEO Optimization -->
+    <title>F.O. Amarachi | Lands & Properties in Abuja | NEFT Properties</title>
+    <meta name="description" content="Discover premium lands and properties in Abuja with F.O. Amarachi, Business Development Executive at NEFT Properties. Explore available properties and request an inspection today.">
+    <meta property="og:title" content="F.O. Amarachi | Lands & Properties in Abuja | NEFT Properties">
+    <meta property="og:description" content="Discover premium lands and properties in Abuja. Explore verified residential and commercial opportunities with F.O. Amarachi.">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .property-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#0F172A',
+                            900: '#0B1120',
+                            950: '#050811',
+                        },
+                        gold: {
+                            400: '#FACC15',
+                            500: '#D97706',
+                            600: '#B45309',
+                            champagne: '#F3E5AB'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
         }
-        .property-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+    </script>
 
-    <!-- Navigation Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-building-user text-emerald-600 text-2xl"></i>
-                <span class="text-xl font-bold tracking-tight text-gray-900">MARA <span class="text-emerald-600">PROPERTIES</span></span>
-            </div>
-            <a href="https://wa.me/2340000000000?text=Hello%20Amara,%20I%20am%20interested%20in%20learning%20more%20about%20your%20property%20listings." target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition">
-                <i class="fa-brands fa-whatsapp text-lg"></i>
-                <span>Chat with Agent</span>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-gold-500 selection:text-white"
+      x-data="realEstateApp()"
+      x-init="initApp()">
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a :href="'https://wa.me/2348134644098?text=' + encodeURIComponent('Hello F.O. Amarachi, I am reaching out regarding property inquiries on your website.')" 
+       target="_blank" 
+       aria-label="Chat on WhatsApp"
+       class="fixed bottom-6 right-6 z-50 bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110">
+        <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
+    </a>
+
+    <!-- NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md border-b border-slate-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex flex-col">
+                <span class="font-heading text-xl font-bold tracking-wider text-gold-champagne">F.O. AMARACHI</span>
+                <span class="text-xs tracking-widest text-slate-400 uppercase">NEFT Properties Abuja</span>
             </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#home" class="hover:text-gold-400 transition-colors">Home</a>
+                <a href="#properties" class="hover:text-gold-400 transition-colors">Properties</a>
+                <a href="#lands" class="hover:text-gold-400 transition-colors">Lands</a>
+                <a href="#houses" class="hover:text-gold-400 transition-colors">Houses</a>
+                <a href="#about" class="hover:text-gold-400 transition-colors">About Amarachi</a>
+                <a href="#contact" class="hover:text-gold-400 transition-colors">Contact</a>
+            </nav>
+
+            <div class="hidden md:flex items-center space-x-4">
+                <template x-if="!user">
+                    <button @click="authModalOpen = true" class="text-sm px-4 py-2 text-slate-300 hover:text-white transition">Sign In</button>
+                </template>
+                <template x-if="user">
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="text-sm px-4 py-2 bg-slate-800 rounded-md border border-slate-700 flex items-center space-x-2">
+                            <i class="ph ph-user"></i>
+                            <span x-text="user.email.split('@')[0]"></span>
+                        </button>
+                        <div x-show="open" @click.outside="open = false" class="absolute right-0 mt-2 w-48 bg-navy-900 border border-slate-800 rounded-md shadow-xl py-2">
+                            <button @click="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-800">Logout</button>
+                        </div>
+                    </div>
+                </template>
+                <a :href="'https://wa.me/2348134644098'" target="_blank" class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold text-sm px-4 py-2.5 rounded-md transition shadow-md flex items-center space-x-2">
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                    <span>+234 813 464 4098</span>
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-2xl text-slate-300 hover:text-white">
+                <i class="ph" :class="mobileMenuOpen ? 'ph-x' : 'ph-list'"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div x-show="mobileMenuOpen" class="md:hidden bg-navy-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Home</a>
+            <a href="#properties" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Properties</a>
+            <a href="#lands" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Lands</a>
+            <a href="#houses" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Houses</a>
+            <a href="#about" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">About Amarachi</a>
+            <a href="#contact" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Contact</a>
+            <div class="pt-4 border-t border-slate-800 flex flex-col space-y-3">
+                <template x-if="!user">
+                    <button @click="authModalOpen = true; mobileMenuOpen = false;" class="w-full text-center py-2 border border-slate-700 rounded-md text-slate-300">Sign In / Register</button>
+                </template>
+                <a :href="'https://wa.me/2348134644098'" target="_blank" class="w-full text-center bg-gold-500 text-navy-950 font-semibold py-2.5 rounded-md">Chat on WhatsApp</a>
+            </div>
         </div>
     </header>
 
-    <!-- Hero Banner -->
-    <section class="bg-emerald-900 text-white py-16 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
-        <div class="max-w-3xl mx-auto relative z-10">
-            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">Find Your Dream Property in Abuja</h1>
-            <p class="text-emerald-100 text-base sm:text-lg mb-8">Explore premium terrace duplexes, detached penthouses, and bungalows across Prime Abuja Locations.</p>
+    <!-- HERO / LANDING SECTION -->
+    <section id="home" class="relative min-h-[85vh] flex items-center justify-center bg-navy-950 text-white">
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
+             style="background-image: url('./photo_2026-08-17_18-46-44.jpg');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/60 to-transparent"></div>
+
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center py-20">
+            <span class="inline-block px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-widest bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-full">
+                NEFT Properties Abuja
+            </span>
+            <h1 class="font-heading text-4xl sm:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
+                Find the Right Property.<br><span class="text-gold-champagne">Build the Right Future.</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-4 font-light">
+                Premium lands and properties in Abuja & high-growth corridors, selected for secure ownership and high ROI.
+            </p>
+            <p class="text-sm sm:text-base text-slate-400 mb-10">
+                Explore 15 verified residential & commercial listings with F.O. Amarachi, Business Development Executive at NEFT Properties.
+            </p>
             
-            <!-- Dynamic Search & Filter Bar -->
-            <div class="bg-white p-3 rounded-xl shadow-lg flex flex-col sm:flex-row gap-2 max-w-2xl mx-auto text-gray-800">
-                <input type="text" id="searchInput" placeholder="Search by estate or location..." class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                <select id="typeFilter" class="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-                    <option value="">All Property Types</option>
-                    <option value="Terrace Duplex">Terrace Duplex</option>
-                    <option value="Penthouse">Penthouse</option>
-                    <option value="Detached Duplex">Detached Duplex</option>
-                    <option value="Bungalow">Bungalow</option>
-                    <option value="Block of Flats">Block of Flats</option>
-                </select>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#properties" class="w-full sm:w-auto px-8 py-4 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold rounded-lg transition-all shadow-lg hover:shadow-gold-500/20 text-center">
+                    View All 15 Properties
+                </a>
+                <button @click="openInspectionModal('General Inquiry')" class="w-full sm:w-auto px-8 py-4 bg-slate-800/80 hover:bg-slate-800 text-white border border-slate-700 font-semibold rounded-lg transition-all backdrop-blur-sm text-center">
+                    Request an Inspection
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-900">Featured Listings</h2>
-            <span id="propertyCount" class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Showing all listings</span>
+    <!-- PROPERTY LISTINGS SECTION -->
+    <section id="properties" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <h2 class="font-heading text-3xl font-bold text-navy-900">Explore All Available Listings</h2>
+                <p class="text-slate-600 mt-2">Showing verified plots, semi-finished structures, and master-planned layouts.</p>
+            </div>
+            <!-- Category Filters -->
+            <div class="mt-6 md:mt-0 flex flex-wrap gap-2">
+                <template x-for="cat in ['All', 'Lands', 'Houses', 'Commercial', 'Residential']">
+                    <button @click="activeFilter = cat" 
+                            :class="activeFilter === cat ? 'bg-navy-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'"
+                            class="px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                            x-text="cat"></button>
+                </template>
+            </div>
         </div>
 
-        <!-- Property Grid Area -->
-        <div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Property cards will render dynamically via JS -->
-        </div>
-    </main>
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <template x-for="property in filteredProperties" :key="property.id">
+                <div class="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="relative h-64 overflow-hidden bg-slate-100">
+                        <img :src="property.images[0]" :alt="property.title" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80'" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-4 left-4 bg-navy-900/80 backdrop-blur-md text-gold-champagne text-xs font-bold px-3 py-1 rounded-full" x-text="property.type"></span>
+                        <button @click="toggleFavorite(property.id)" class="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-md rounded-full text-slate-700 hover:text-red-500 transition">
+                            <i class="ph-fill ph-heart" :class="isFavorite(property.id) ? 'text-red-500' : 'text-slate-400'"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-lg text-navy-900 line-clamp-1 mb-1" x-text="property.title"></h3>
+                            <p class="text-sm text-slate-500 mb-3 flex items-center gap-1">
+                                <i class="ph ph-map-pin text-gold-500"></i> <span x-text="property.location"></span>
+                            </p>
+                            <p class="text-2xl font-bold text-gold-600 mb-4" x-text="'₦' + property.price.toLocaleString()"></p>
+                            <p class="text-sm text-slate-600 line-clamp-2 mb-4" x-text="property.description"></p>
+                        </div>
+                        
+                        <div>
+                            <div class="border-t border-slate-100 pt-4 mb-4 flex items-center justify-between text-xs text-slate-500">
+                                <span x-show="property.bedrooms" class="flex items-center gap-1"><i class="ph ph-bed"></i> <span x-text="property.bedrooms + ' Beds'"></span></span>
+                                <span x-show="property.bathrooms" class="flex items-center gap-1"><i class="ph ph-drop"></i> <span x-text="property.bathrooms + ' Baths'"></span></span>
+                                <span x-show="property.size" class="flex items-center gap-1"><i class="ph ph-bounding-box"></i> <span x-text="property.size"></span></span>
+                            </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 text-center sm:flex sm:justify-between sm:text-left">
-            <p class="text-sm">&copy; 2026 Mara Properties. Real Estate Consultant - Abuja, Nigeria.</p>
-            <p class="text-sm mt-2 sm:mt-0">Powered by NEFT Properties Ltd & Partner Estates</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button @click="openDetails(property)" class="px-3 py-2 border border-navy-900 text-navy-900 font-semibold rounded text-xs text-center hover:bg-navy-900 hover:text-white transition">View Details</button>
+                                <button @click="openInspectionModal(property.title)" class="px-3 py-2 bg-gold-500 text-navy-950 font-bold rounded text-xs text-center hover:bg-gold-600 transition">Inspect</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+
+    <!-- LANDS HIGHLIGHT SECTION -->
+    <section id="lands" class="bg-slate-900 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mb-12">
+                <span class="text-gold-400 text-xs font-bold tracking-widest uppercase">Verified Land Offerings</span>
+                <h2 class="font-heading text-3xl font-bold mt-2">Strategic Plots & Estates</h2>
+                <p class="text-slate-400 mt-2">Explore prime residential and commercial lands across Abuja, Kyami, Dei Dei, Pyakasa, Karshi, and Delta State.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <template x-for="land in properties.filter(p => p.category === 'Lands').slice(0, 4)" :key="land.id">
+                    <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 flex flex-col md:flex-row">
+                        <img :src="land.images[0]" :alt="land.title" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80'" class="md:w-1/2 h-64 md:h-auto object-cover">
+                        <div class="p-6 flex flex-col justify-between md:w-1/2">
+                            <div>
+                                <h3 class="font-bold text-xl text-white" x-text="land.title"></h3>
+                                <p class="text-gold-400 font-bold text-lg mt-2" x-text="'₦' + land.price.toLocaleString()"></p>
+                                <p class="text-xs text-slate-400 mt-1" x-text="'Location: ' + land.location"></p>
+                                <p class="text-xs text-slate-400" x-text="'Size: ' + land.size"></p>
+                                <p class="text-sm text-slate-300 mt-3 line-clamp-3" x-text="land.description"></p>
+                            </div>
+                            <button @click="openInspectionModal(land.title)" class="mt-6 w-full py-2.5 bg-gold-500 text-navy-950 font-bold text-sm rounded hover:bg-gold-400 transition">Schedule Land Tour</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOUSES HIGHLIGHT SECTION -->
+    <section id="houses" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mb-12">
+                <span class="text-gold-600 text-xs font-bold tracking-widest uppercase">Housing Developments</span>
+                <h2 class="font-heading text-3xl font-bold text-navy-900 mt-2">Duplexes & Residential Projects</h2>
+                <p class="text-slate-600 mt-2">Invest in semi-finished structures, carcass duplexes, and master-planned residential estates.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <template x-for="house in properties.filter(p => p.category === 'Houses')" :key="house.id">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
+                        <img :src="house.images[0]" :alt="house.title" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80'" class="h-48 w-full object-cover">
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-navy-900 text-lg mb-1" x-text="house.title"></h3>
+                                <p class="text-xs text-slate-500 mb-2" x-text="house.location"></p>
+                                <p class="text-xl font-bold text-gold-600 mb-3" x-text="'₦' + house.price.toLocaleString()"></p>
+                                <p class="text-sm text-slate-600 line-clamp-3 mb-4" x-text="house.description"></p>
+                            </div>
+                            <button @click="openInspectionModal(house.title)" class="w-full py-2 bg-navy-900 text-white font-bold text-xs rounded hover:bg-gold-500 hover:text-navy-950 transition">Request Inspection</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT F.O. AMARACHI -->
+    <section id="about" class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="rounded-2xl overflow-hidden bg-slate-100 shadow-2xl border-4 border-white">
+                        <img src="./photo_2026-08-17_18-46-44.jpg" alt="F.O. Amarachi - NEFT Properties Abuja" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80'" class="w-full h-[500px] object-cover">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-navy-900 text-white p-6 rounded-xl shadow-xl hidden sm:block">
+                        <p class="font-heading text-xl font-bold text-gold-champagne">NEFT Properties</p>
+                        <p class="text-xs text-slate-400">Abuja Real Estate Advisory</p>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-gold-600 tracking-widest uppercase">Meet Your Realtor</span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-bold text-navy-900 mt-2 mb-4">F.O. Amarachi</h2>
+                    <p class="text-slate-500 font-medium mb-6">Business Development Executive at NEFT Properties Abuja</p>
+                    <div class="space-y-4 text-slate-600 leading-relaxed">
+                        <p>With deep structural insight into the Abuja real estate landscape, I help individuals, families, and corporate investors acquire verified property with absolute transparency and confidence.</p>
+                        <p>Whether you are searching for strategic land opportunities in developing corridors like Kyami, Gui, and Karshi or luxury residential duplexes designed for home ownership, my mandate is to ensure every transaction is smooth and legally sound.</p>
+                    </div>
+                    <div class="mt-8 flex items-center space-x-4">
+                        <a :href="'https://wa.me/2348134644098?text=' + encodeURIComponent('Hello Amarachi, I would like to schedule a personal real estate consultation.')" target="_blank" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md transition flex items-center gap-2">
+                            <i class="ph-bold ph-whatsapp-logo text-xl"></i>
+                            <span>Chat on WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER WITH UPDATED OFFICE ADDRESSES -->
+    <footer id="contact" class="bg-navy-900 text-slate-400 border-t border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-1">
+                <span class="font-heading text-lg font-bold text-gold-champagne block">F.O. AMARACHI</span>
+                <p class="text-xs text-slate-500 uppercase tracking-widest mt-1">Business Development Executive | NEFT Properties Abuja</p>
+                <p class="mt-4 text-sm leading-relaxed">Assisting buyers and investors in acquiring verified properties and strategic land across Abuja.</p>
+                <p class="text-sm mt-4">WhatsApp: <a href="https://wa.me/2348134644098" class="text-gold-400 hover:underline">+234 813 464 4098</a></p>
+            </div>
+            
+            <div>
+                <h4 class="text-white text-sm font-semibold mb-4">Quick Links</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#home" class="hover:text-gold-400">Home</a></li>
+                    <li><a href="#properties" class="hover:text-gold-400">Properties</a></li>
+                    <li><a href="#lands" class="hover:text-gold-400">Lands</a></li>
+                    <li><a href="#about" class="hover:text-gold-400">About Amarachi</a></li>
+                </ul>
+            </div>
+
+            <!-- HEAD OFFICE ADDRESS -->
+            <div>
+                <h4 class="text-white text-sm font-semibold mb-4">Head Office</h4>
+                <p class="text-sm leading-relaxed text-slate-300">
+                    Suite B, First Floor, Mazado Plaza,<br>
+                    Plot 874 Shettima Alimunguno Crescent,<br>
+                    Behind Julius Berger Yard,<br>
+                    Utako, Abuja
+                </p>
+            </div>
+
+            <!-- BRANCH OFFICE ADDRESS -->
+            <div>
+                <h4 class="text-white text-sm font-semibold mb-4">Branch Office</h4>
+                <p class="text-sm leading-relaxed text-slate-300">
+                    Suite B003, Quad Plaza,<br>
+                    Plot 563 Ameh Ebute Street,<br>
+                    Wuye District, Abuja
+                </p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-800 text-xs text-center text-slate-600">
+            &copy; 2026 NEFT Properties Abuja / F.O. Amarachi. All Rights Reserved.
         </div>
     </footer>
 
-    <!-- JavaScript Data and Rendering Engine -->
-    <script>
-        const properties = [
-            // PLATINUM CITY, APO WASSA
-            {
-                id: 1,
-                title: "2 Bedroom Terrace Duplex",
-                location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja",
-                estate: "Platinum City",
-                developer: "NEFT Properties Ltd (RC: 7052836)",
-                size: "180 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 2,
-                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 2,
-                title: "4 Bedroom Terrace Duplex",
-                location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja",
-                estate: "Platinum City",
-                developer: "NEFT Properties Ltd (RC: 7052836)",
-                size: "250 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 3,
-                title: "5 Bedroom Terrace Duplex with Attached BQ",
-                location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja",
-                estate: "Platinum City",
-                developer: "NEFT Properties Ltd (RC: 7052836)",
-                size: "300 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 4,
-                title: "4 Bedroom Fully Detached Penthouse with BQ",
-                location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja",
-                estate: "Platinum City",
-                developer: "NEFT Properties Ltd (RC: 7052836)",
-                size: "450 SQM",
-                type: "Penthouse",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 5,
-                title: "5 Bedroom Fully Detached Duplex with BQ",
-                location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja",
-                estate: "Platinum City",
-                developer: "NEFT Properties Ltd (RC: 7052836)",
-                size: "550 SQM",
-                type: "Detached Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
-            },
-
-            // PLAIN FIELD ESTATE, KUJE
-            {
-                id: 6,
-                title: "2 Bedroom Terrace Duplex with Attached BQ",
-                location: "Behind Methodist Church, opp. Kuker Homes, Kuje",
-                estate: "Plain Field Estate",
-                size: "180 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 2,
-                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 7,
-                title: "4 Bedroom Terrace Duplex",
-                location: "Behind Methodist Church, opp. Kuker Homes, Kuje",
-                estate: "Plain Field Estate",
-                size: "250 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 8,
-                title: "2 Bedroom Fully Detached Bungalow",
-                location: "Behind Methodist Church, opp. Kuker Homes, Kuje",
-                estate: "Plain Field Estate",
-                size: "250 SQM",
-                type: "Bungalow",
-                bedrooms: 2,
-                image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 9,
-                title: "3 Bedroom Semi-Detached Bungalow",
-                location: "Behind Methodist Church, opp. Kuker Homes, Kuje",
-                estate: "Plain Field Estate",
-                size: "350 SQM",
-                type: "Bungalow",
-                bedrooms: 3,
-                image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 10,
-                title: "3 Bedroom Detached Bungalow with Detached BQ",
-                location: "Behind Methodist Church, opp. Kuker Homes, Kuje",
-                estate: "Plain Field Estate",
-                size: "450 SQM",
-                type: "Bungalow",
-                bedrooms: 3,
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 11,
-                title: "5 Bedroom Fully Detached Duplex with BQ",
-                location: "Behind Methodist Church, opp. Kuker Homes, Kuje",
-                estate: "Plain Field Estate",
-                size: "550 SQM",
-                type: "Detached Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 12,
-                title: "6 Units of 3 Bedroom Block of Flats",
-                location: "Behind Methodist Church, opp. Kuker Homes, Kuje",
-                estate: "Plain Field Estate",
-                size: "1,000 SQM",
-                type: "Block of Flats",
-                bedrooms: 3,
-                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80"
-            },
-
-            // DOUBLE KING ESTATE, GUZAPE
-            {
-                id: 13,
-                title: "4 Bedroom Terrace Duplex",
-                location: "Guzape, FCT Abuja",
-                estate: "Double King Estate",
-                size: "250 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 14,
-                title: "4 Bedroom Semi-Detached Penthouse",
-                location: "Guzape, FCT Abuja",
-                estate: "Double King Estate",
-                size: "350 SQM",
-                type: "Penthouse",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 15,
-                title: "4 Bedroom Fully Detached Penthouse",
-                location: "Guzape, FCT Abuja",
-                estate: "Double King Estate",
-                size: "500 SQM",
-                type: "Penthouse",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 16,
-                title: "5 Bedroom Fully Detached Duplex with 2-Room BQ",
-                location: "Guzape, FCT Abuja",
-                estate: "Double King Estate",
-                size: "600 SQM",
-                type: "Detached Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
-            },
-
-            // TREASURE GATE ESTATE, DEI DEI
-            {
-                id: 17,
-                title: "2 Bedroom Terrace Duplex with Attached BQ",
-                location: "Dei Dei, FCT Abuja",
-                estate: "Treasure Gate Estate",
-                size: "180 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 2,
-                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 18,
-                title: "4 Bedroom Terrace Duplex",
-                location: "Dei Dei, FCT Abuja",
-                estate: "Treasure Gate Estate",
-                size: "250 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 19,
-                title: "4 Bedroom Semi-Detached Penthouse",
-                location: "Dei Dei, FCT Abuja",
-                estate: "Treasure Gate Estate",
-                size: "350 SQM",
-                type: "Penthouse",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 20,
-                title: "4 Bedroom Fully Detached Penthouse with BQ",
-                location: "Dei Dei, FCT Abuja",
-                estate: "Treasure Gate Estate",
-                size: "450 SQM",
-                type: "Penthouse",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 21,
-                title: "5 Bedroom Fully Detached Duplex with 2 Bed BQ",
-                location: "Dei Dei, FCT Abuja",
-                estate: "Treasure Gate Estate",
-                size: "550 SQM",
-                type: "Detached Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
-            },
-
-            // MERIDIAN CITY, PYAKASA
-            {
-                id: 22,
-                title: "2 Bedroom Terrace Duplex with Attached BQ",
-                location: "After Mshel Court, Pyakasa, FCT Abuja",
-                estate: "Meridian City",
-                size: "180 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 2,
-                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 23,
-                title: "4 Bedroom Terrace Duplex",
-                location: "After Mshel Court, Pyakasa, FCT Abuja",
-                estate: "Meridian City",
-                size: "250 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 24,
-                title: "4 Bedroom Fully Detached Duplex with BQ",
-                location: "After Mshel Court, Pyakasa, FCT Abuja",
-                estate: "Meridian City",
-                size: "400 SQM",
-                type: "Detached Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 25,
-                title: "5 Bedroom Fully Detached Duplex with Detached BQ",
-                location: "After Mshel Court, Pyakasa, FCT Abuja",
-                estate: "Meridian City",
-                size: "600 SQM",
-                type: "Detached Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
-            },
-
-            // ASOKORO EXTENSION
-            {
-                id: 26,
-                title: "2 Bedroom Terraced Duplex with Attached BQ",
-                location: "Asokoro Extension, FCT Abuja",
-                estate: "Asokoro Extension",
-                size: "200 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 2,
-                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 27,
-                title: "5 Bedroom Terraced Duplex with Attached BQ",
-                location: "Asokoro Extension, FCT Abuja",
-                estate: "Asokoro Extension",
-                size: "300 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 28,
-                title: "4 Bedroom Semi-Detached Duplex with BQ",
-                location: "Asokoro Extension, FCT Abuja",
-                estate: "Asokoro Extension",
-                size: "400 SQM",
-                type: "Semi-Detached Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 29,
-                title: "5 Bedroom Detached Penthouse + Self-Contained BQ",
-                location: "Asokoro Extension, FCT Abuja",
-                estate: "Asokoro Extension",
-                size: "500 SQM",
-                type: "Penthouse",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
-            },
-
-            // ESTORA RESIDENCE, MAITAMA 2
-            {
-                id: 30,
-                title: "4 Bedroom Terrace Duplex",
-                location: "Garui Shere Road, behind Police School, Maitama 2",
-                estate: "Estora Residence",
-                size: "250 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 31,
-                title: "3 Bedroom Detached Penthouse with 2 Rooms BQ",
-                location: "Garui Shere Road, behind Police School, Maitama 2",
-                estate: "Estora Residence",
-                size: "450 SQM",
-                type: "Penthouse",
-                bedrooms: 3,
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 32,
-                title: "5 Bedroom Detached Duplex with 2 Bedroom BQ",
-                location: "Garui Shere Road, behind Police School, Maitama 2",
-                estate: "Estora Residence",
-                size: "600 SQM",
-                type: "Detached Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 33,
-                title: "6 Units of 3 Bedroom Block of Flats",
-                location: "Garui Shere Road, behind Police School, Maitama 2",
-                estate: "Estora Residence",
-                size: "1,000 SQM",
-                type: "Block of Flats",
-                bedrooms: 3,
-                image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80"
-            },
-
-            // DOUBLE GRACE DOMAIN, KURUDU
-            {
-                id: 34,
-                title: "2 Bedroom Terrace Duplex with Attached BQ",
-                location: "Peace Land Estate, Kurudu, FCT Abuja",
-                estate: "Double Grace Domain",
-                size: "180 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 2,
-                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 35,
-                title: "2 Bedroom Fully Detached Bungalow",
-                location: "Peace Land Estate, Kurudu, FCT Abuja",
-                estate: "Double Grace Domain",
-                size: "250 SQM",
-                type: "Bungalow",
-                bedrooms: 2,
-                image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 36,
-                title: "4 Bedroom Terrace Duplex",
-                location: "Peace Land Estate, Kurudu, FCT Abuja",
-                estate: "Double Grace Domain",
-                size: "250 SQM",
-                type: "Terrace Duplex",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 37,
-                title: "4 Bedroom Semi-Detached Penthouse",
-                location: "Peace Land Estate, Kurudu, FCT Abuja",
-                estate: "Double Grace Domain",
-                size: "350 SQM",
-                type: "Penthouse",
-                bedrooms: 4,
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 38,
-                title: "3 Bedroom Detached Bungalow with Detached BQ",
-                location: "Peace Land Estate, Kurudu, FCT Abuja",
-                estate: "Double Grace Domain",
-                size: "450 SQM",
-                type: "Bungalow",
-                bedrooms: 3,
-                image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                id: 39,
-                title: "5 Bedroom Fully Detached Duplex with BQ",
-                location: "Peace Land Estate, Kurudu, FCT Abuja",
-                estate: "Double Grace Domain",
-                size: "500 SQM",
-                type: "Detached Duplex",
-                bedrooms: 5,
-                image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80"
-            }
-        ];
-
-        // UI Rendering Function
-        function renderProperties(filteredList) {
-            const grid = document.getElementById('propertyGrid');
-            const countLabel = document.getElementById('propertyCount');
-            
-            grid.innerHTML = '';
-            countLabel.textContent = `Showing ${filteredList.length} property listings`;
-
-            if (filteredList.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-12 text-gray-500">
-                        <i class="fa-solid fa-house-circle-xmark text-4xl mb-3 text-gray-300"></i>
-                        <p class="text-lg font-medium">No properties match your search parameters.</p>
-                        <p class="text-sm">Try resetting filters or adjusting search text.</p>
+    <!-- PROPERTY DETAILS MODAL -->
+    <div x-show="detailsModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="detailsModalOpen = false" class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8">
+            <template x-if="selectedProperty">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-xs text-gold-600 font-bold uppercase tracking-wider" x-text="selectedProperty.type"></span>
+                            <h2 class="font-heading text-2xl font-bold text-navy-900" x-text="selectedProperty.title"></h2>
+                            <p class="text-sm text-slate-500" x-text="selectedProperty.location"></p>
+                        </div>
+                        <button @click="detailsModalOpen = false" class="text-slate-400 hover:text-slate-600 text-2xl"><i class="ph ph-x"></i></button>
                     </div>
-                `;
-                return;
-            }
 
-            filteredList.forEach(item => {
-                const whatsappMessage = encodeURIComponent(`Hello Amara, I am interested in inquiring about the following property listing:\n\n*Property:* ${item.title}\n*Estate:* ${item.estate}\n*Size:* ${item.size}\n*Location:* ${item.location}`);
-                
-                const card = document.createElement('div');
-                card.className = 'property-card bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm flex flex-col justify-between';
-                
-                card.innerHTML = `
+                    <div class="relative h-80 bg-slate-100 rounded-lg overflow-hidden mb-6">
+                        <img :src="selectedProperty.images[activeImageIndex]" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80'" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 flex justify-between items-center px-4" x-show="selectedProperty.images.length > 1">
+                            <button @click="activeImageIndex = (activeImageIndex - 1 + selectedProperty.images.length) % selectedProperty.images.length" class="p-2 bg-black/50 text-white rounded-full"><i class="ph ph-caret-left"></i></button>
+                            <button @click="activeImageIndex = (activeImageIndex + 1) % selectedProperty.images.length" class="p-2 bg-black/50 text-white rounded-full"><i class="ph ph-caret-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 p-4 bg-slate-50 rounded-lg text-center text-sm">
+                        <div><span class="block text-xs text-slate-400">Price</span><span class="font-bold text-navy-900" x-text="'₦' + selectedProperty.price.toLocaleString()"></span></div>
+                        <div><span class="block text-xs text-slate-400">Size</span><span class="font-bold text-navy-900" x-text="selectedProperty.size"></span></div>
+                        <div x-show="selectedProperty.bedrooms"><span class="block text-xs text-slate-400">Bedrooms</span><span class="font-bold text-navy-900" x-text="selectedProperty.bedrooms"></span></div>
+                        <div x-show="selectedProperty.bathrooms"><span class="block text-xs text-slate-400">Bathrooms</span><span class="font-bold text-navy-900" x-text="selectedProperty.bathrooms"></span></div>
+                    </div>
+
+                    <h4 class="font-bold text-navy-900 mb-2">Description</h4>
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed" x-text="selectedProperty.description"></p>
+
+                    <button @click="detailsModalOpen = false; openInspectionModal(selectedProperty.title)" class="w-full py-4 bg-gold-500 text-navy-950 font-bold rounded-lg hover:bg-gold-600 transition">Request Property Inspection</button>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- INSPECTION MODAL -->
+    <div x-show="inspectionModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="inspectionModalOpen = false" class="bg-white rounded-xl max-w-md w-full p-6">
+            <h3 class="font-heading text-xl font-bold text-navy-900 mb-1">Schedule an Inspection</h3>
+            <p class="text-xs text-slate-500 mb-6" x-text="'Interested property: ' + inspectionTarget"></p>
+
+            <form @submit.prevent="submitInspection()">
+                <div class="space-y-4">
                     <div>
-                        <div class="relative h-48 overflow-hidden bg-gray-100">
-                            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
-                            <span class="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-semibold px-2.5 py-1 rounded">
-                                ${item.estate}
-                            </span>
-                            <span class="absolute top-3 right-3 bg-gray-900/80 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded">
-                                ${item.size}
-                            </span>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
+                        <input type="text" x-model="inspectionForm.name" required class="w-full px-3 py-2 border rounded-md text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
+                        <input type="email" x-model="inspectionForm.email" required class="w-full px-3 py-2 border rounded-md text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
+                        <input type="tel" x-model="inspectionForm.phone" required class="w-full px-3 py-2 border rounded-md text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Preferred Date</label>
+                            <input type="date" x-model="inspectionForm.date" required class="w-full px-3 py-2 border rounded-md text-sm">
                         </div>
-                        <div class="p-5">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2 leading-snug">${item.title}</h3>
-                            <p class="text-xs text-gray-500 mb-4 flex items-start space-x-1">
-                                <i class="fa-solid fa-location-dot text-emerald-600 mt-0.5"></i>
-                                <span>${item.location}</span>
-                            </p>
-                            ${item.developer ? `<p class="text-xs font-medium text-emerald-800 bg-emerald-50 p-2 rounded mb-3"><i class="fa-solid fa-shield-halved mr-1"></i> ${item.developer}</p>` : ''}
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Preferred Time</label>
+                            <input type="time" x-model="inspectionForm.time" required class="w-full px-3 py-2 border rounded-md text-sm">
                         </div>
                     </div>
-                    <div class="px-5 pb-5 pt-0">
-                        <a href="https://wa.me/2340000000000?text=${whatsappMessage}" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg text-sm flex items-center justify-center space-x-2 transition">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
-                            <span>Inquire via WhatsApp</span>
-                        </a>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Additional Message</label>
+                        <textarea x-model="inspectionForm.message" class="w-full px-3 py-2 border rounded-md text-sm h-20"></textarea>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
+                </div>
+                <button type="submit" class="w-full mt-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-sm transition">Submit & Send to WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- State Engine -->
+    <script>
+        function realEstateApp() {
+            return {
+                mobileMenuOpen: false,
+                authModalOpen: false,
+                detailsModalOpen: false,
+                inspectionModalOpen: false,
+                authMode: 'login',
+                activeFilter: 'All',
+                activeImageIndex: 0,
+                selectedProperty: null,
+                inspectionTarget: '',
+                favorites: [],
+                user: null,
+
+                authForm: { email: '', password: '' },
+                inspectionForm: { name: '', email: '', phone: '', date: '', time: '', message: '' },
+
+                properties: [
+                    {
+                        id: 1,
+                        title: "NEFT Estate Gatehouse & Commercial Plot",
+                        category: "Lands",
+                        type: "Commercial",
+                        location: "NEFT Estate, Abuja",
+                        price: 35000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Prime estate entrance plot featuring modern security gatehouse, paved access roads, and ongoing drainage infrastructure.",
+                        images: ["./photo_2026-08-17_18-46-44.jpg"]
+                    },
+                    {
+                        id: 2,
+                        title: "Ongoing 4-Bedroom Duplex Project",
+                        category: "Houses",
+                        type: "Residential",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 65000000,
+                        size: "500 sqm",
+                        bedrooms: 4,
+                        bathrooms: 4,
+                        description: "Active building project at lintel and blockwork levels situated in a rapidly growing, accessible layout in Gui.",
+                        images: [
+                            "./photo_2026-08-18_09-23-04.jpg",
+                            "./photo_2026-08-18_10-55-47.jpg"
+                        ]
+                    },
+                    {
+                        id: 3,
+                        title: "Master-Planned 5-Bed Estate Duplex Plot",
+                        category: "Houses",
+                        type: "Residential",
+                        location: "Abuja Hills Layout",
+                        price: 85000000,
+                        size: "1000 sqm",
+                        bedrooms: 5,
+                        bathrooms: 6,
+                        description: "Elevated aerial overview plot surrounded by ongoing multi-unit luxury duplexes and estate recreation facilities.",
+                        images: ["./photo_2026-08-18_10-52-41.jpg"]
+                    },
+                    {
+                        id: 4,
+                        title: "Prime Access Dry Land Plot",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 18000000,
+                        size: "500 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Wide access road layout with clear mountain views and surrounding active residential developments.",
+                        images: [
+                            "./photo_2026-08-18_10-55-50.jpg",
+                            "./photo_2026-08-18_10-55-53.jpg"
+                        ]
+                    },
+                    {
+                        id: 5,
+                        title: "Hillview Prime Investment Plot",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 22000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Expansive plot layout with excellent topography, perfect for capital appreciation or immediate building.",
+                        images: [
+                            "./photo_2026-08-18_10-55-57.jpg",
+                            "./photo_2026-08-18_10-55-59.jpg"
+                        ]
+                    },
+                    {
+                        id: 6,
+                        title: "Serviced Plot with Raft Foundation Started",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 28000000,
+                        size: "550 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Property site with ground works completed and raft foundation commenced, cutting down builder setup time.",
+                        images: ["./photo_2026-08-18_10-56-02.jpg"]
+                    },
+                    {
+                        id: 7,
+                        title: "Estate Sector Access Plot",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 16500000,
+                        size: "450 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Well-graded access layout with clear boundary demarcations in a fast-expanding neighborhood corridor.",
+                        images: ["./photo_2026-08-18_10-56-05.jpg"]
+                    },
+                    {
+                        id: 8,
+                        title: "Hillside View Residential Plot",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 19500000,
+                        size: "500 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Strategic residential plot offering scenic mountain vistas, clean soil structure, and near-term grid connection.",
+                        images: ["./photo_2026-08-18_10-56-07.jpg"]
+                    },
+                    {
+                        id: 9,
+                        title: "Cornerpiece Residential Parcel",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 24000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Desirable cornerpiece positioning allowing dual-access designs for detached duplexes or block units.",
+                        images: ["./photo_2026-08-18_10-56-10.jpg"]
+                    },
+                    {
+                        id: 10,
+                        title: "Elevated Building Site",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 21000000,
+                        size: "500 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Solid high-ground land with natural drainage, surrounded by new residential developments.",
+                        images: ["./photo_2026-08-18_10-56-13.jpg"]
+                    },
+                    {
+                        id: 11,
+                        title: "Foundation & Excavation Plot",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 26000000,
+                        size: "500 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Ongoing building plot featuring column rebar preparation and footing trenches already underway.",
+                        images: ["./photo_2026-08-18_10-56-16.jpg"]
+                    },
+                    {
+                        id: 12,
+                        title: "Kyami Corridor Premium Residential Plot",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Kyami, Abuja",
+                        price: 32000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "High-value plot situated in the rapid-growth Kyami corridor, close to major highway links and institutional hubs.",
+                        images: ["./photo_2026-08-17_18-46-44.jpg"]
+                    },
+                    {
+                        id: 13,
+                        title: "Dei Dei Commercial & Storage Land",
+                        category: "Lands",
+                        type: "Commercial",
+                        location: "Dei Dei, Abuja",
+                        price: 45000000,
+                        size: "1200 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Large parcel suited for commercial warehousing, logistics, or light industrial setups in bustling Dei Dei.",
+                        images: ["./photo_2026-08-18_10-56-05.jpg"]
+                    },
+                    {
+                        id: 14,
+                        title: "Pyakasa Fast-Growth Residential Plot",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Pyakasa, Abuja",
+                        price: 15000000,
+                        size: "450 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Accessible residential land in Pyakasa with high rental yield potential upon completion.",
+                        images: ["./photo_2026-08-18_10-56-07.jpg"]
+                    },
+                    {
+                        id: 15,
+                        title: "Karshi Investment Estate Layout",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "New Karshi, Abuja Environs",
+                        price: 12000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Affordable land layout perfect for land banking or medium-term residential development.",
+                        images: ["./photo_2026-08-18_10-56-10.jpg"]
+                    }
+                ],
+
+                initApp() {
+                    const saved = localStorage.getItem('fav_properties');
+                    if (saved) this.favorites = JSON.parse(saved);
+                },
+
+                get filteredProperties() {
+                    if (this.activeFilter === 'All') return this.properties;
+                    return this.properties.filter(p => p.category === this.activeFilter || p.type === this.activeFilter);
+                },
+
+                toggleFavorite(id) {
+                    if (this.favorites.includes(id)) {
+                        this.favorites = this.favorites.filter(favId => favId !== id);
+                    } else {
+                        this.favorites.push(id);
+                    }
+                    localStorage.setItem('fav_properties', JSON.stringify(this.favorites));
+                },
+
+                isFavorite(id) {
+                    return this.favorites.includes(id);
+                },
+
+                openDetails(property) {
+                    this.selectedProperty = property;
+                    this.activeImageIndex = 0;
+                    this.detailsModalOpen = true;
+                },
+
+                openInspectionModal(title) {
+                    this.inspectionTarget = title;
+                    this.inspectionModalOpen = true;
+                },
+
+                submitInspection() {
+                    const messageText = `Hello F.O. Amarachi, I am interested in inspecting ${this.inspectionTarget}.\n\nName: ${this.inspectionForm.name}\nEmail: ${this.inspectionForm.email}\nPhone: ${this.inspectionForm.phone}\nPreferred Date: ${this.inspectionForm.date}\nPreferred Time: ${this.inspectionForm.time}\n\nAdditional Message:\n${this.inspectionForm.message}\n\nI would like to schedule an inspection.`;
+                    
+                    const encodedMessage = encodeURIComponent(messageText);
+                    const whatsappUrl = `https://wa.me/2348134644098?text=${encodedMessage}`;
+                    
+                    this.inspectionModalOpen = false;
+                    window.open(whatsappUrl, '_blank');
+                },
+
+                handleAuth() {
+                    this.user = { email: this.authForm.email };
+                    this.authModalOpen = false;
+                },
+
+                logout() {
+                    this.user = null;
+                }
+            }
         }
-
-        // Filtering logic
-        function filterProperties() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const selectedType = document.getElementById('typeFilter').value;
-
-            const filtered = properties.filter(item => {
-                const matchesSearch = item.title.toLowerCase().includes(searchTerm) || 
-                                      item.estate.toLowerCase().includes(searchTerm) || 
-                                      item.location.toLowerCase().includes(searchTerm);
-                const matchesType = selectedType === "" || item.type === selectedType;
-                
-                return matchesSearch && matchesType;
-            });
-
-            renderProperties(filtered);
-        }
-
-        // Event listeners
-        document.getElementById('searchInput').addEventListener('input', filterProperties);
-        document.getElementById('typeFilter').addEventListener('change', filterProperties);
-
-        // Initial render on page load
-        renderProperties(properties);
     </script>
 </body>
 </html>
