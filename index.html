@@ -1,355 +1,1142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mara Properties | Premium Real Estate in Abuja</title>
+    <!-- SEO Meta Tags -->
+    <title>F.O. Amarachi | Lands & Properties in Abuja | NEFT Properties</title>
+    <meta name="description" content="Discover premium lands and properties in Abuja with F.O. Amarachi, Business Development Executive at NEFT Properties. Explore available properties and request an inspection today.">
+    <meta name="keywords" content="Abuja real estate, land for sale in Abuja, houses for sale in Abuja, NEFT Properties, F.O. Amarachi, Nigeria property investment">
+    
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="F.O. Amarachi | Lands & Properties in Abuja | NEFT Properties">
+    <meta property="og:description" content="Discover premium lands and properties in Abuja with F.O. Amarachi, Business Development Executive at NEFT Properties.">
+    <meta property="og:type" content="website">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .property-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1E293B',
+                            900: '#0F172A',
+                            950: '#020617',
+                        },
+                        gold: {
+                            400: '#FACC15',
+                            500: '#EAB308',
+                            600: '#CA8A04',
+                            700: '#A16207',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Playfair Display', 'serif']
+                    }
+                }
+            }
         }
-        .property-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    </script>
+
+    <!-- Google Fonts & Phosphor Icons CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+        .bg-hero {
+            background-image: linear-gradient(rgba(2, 6, 23, 0.75), rgba(2, 6, 23, 0.85)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-gold-500 selection:text-navy-950" x-data="realEstateApp()">
 
-    <!-- Navigation Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fa-solid fa-building-user text-emerald-600 text-2xl"></i>
-                <span class="text-xl font-bold tracking-tight text-gray-900">MARA <span class="text-emerald-600">PROPERTIES</span></span>
+    <!-- 1. FLOATING WHATSAPP BUTTON -->
+    <a href="https://wa.me/2348134644098?text=Hello%20F.O.%20Amarachi,%20I%20would%20like%20to%20inquire%20about%20your%20available%20properties%20in%20Abuja." 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-600 text-white p-4 rounded-full shadow-2xl transition transform hover:scale-110 flex items-center justify-center group"
+       aria-label="Chat on WhatsApp">
+        <i class="ph-bold ph-whatsapp-logo text-3xl"></i>
+        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-sm font-semibold pl-0 group-hover:pl-2">Chat with Amarachi</span>
+    </a>
+
+    <!-- 2. NAVIGATION BAR -->
+    <header class="bg-navy-950/95 backdrop-blur-md text-white sticky top-0 z-40 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo -->
+                <a href="#home" class="flex flex-col">
+                    <span class="font-heading font-bold text-xl tracking-wider text-white">F.O. AMARACHI</span>
+                    <span class="text-[10px] tracking-widest text-gold-500 uppercase font-semibold">NEFT Properties Abuja</span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden lg:flex items-center space-x-8 text-sm font-medium">
+                    <a href="#home" class="hover:text-gold-500 transition">Home</a>
+                    <a href="#properties" class="hover:text-gold-500 transition">Properties</a>
+                    <a href="#lands" class="hover:text-gold-500 transition">Lands</a>
+                    <a href="#houses" class="hover:text-gold-500 transition">Houses</a>
+                    <a href="#about" class="hover:text-gold-500 transition">About Amarachi</a>
+                    <a href="#contact" class="hover:text-gold-500 transition">Contact</a>
+                </nav>
+
+                <!-- Header Actions -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <template x-if="!user">
+                        <button @click="openAuthModal('login')" class="text-xs font-semibold px-4 py-2 rounded border border-slate-700 hover:border-gold-500 hover:text-gold-500 transition">Login</button>
+                    </template>
+                    <template x-if="user">
+                        <button @click="activeDashboardTab = 'saved'; dashboardModalOpen = true" class="relative text-xs font-semibold px-3 py-2 rounded bg-navy-800 hover:bg-navy-700 transition flex items-center space-x-2">
+                            <i class="ph-bold ph-user-circle text-lg text-gold-500"></i>
+                            <span x-text="user.name"></span>
+                            <span x-show="favorites.length > 0" class="bg-gold-500 text-navy-950 text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center" x-text="favorites.length"></span>
+                        </button>
+                    </template>
+                    
+                    <button @click="checkAdminAccess()" class="text-xs font-semibold px-3 py-2 rounded border border-gold-500/40 text-gold-500 hover:bg-gold-500 hover:text-navy-950 transition flex items-center space-x-1">
+                        <i class="ph-bold ph-lock-key"></i>
+                        <span>Admin</span>
+                    </button>
+
+                    <a href="https://wa.me/2348134644098" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2.5 rounded-md transition flex items-center space-x-2">
+                        <i class="ph-bold ph-whatsapp-logo text-base"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="lg:hidden flex items-center space-x-3">
+                    <button @click="checkAdminAccess()" class="text-xs text-gold-500 px-2 py-1 border border-gold-500/30 rounded">Admin</button>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-slate-300 hover:text-white p-2">
+                        <i class="ph-bold text-2xl" :class="mobileMenuOpen ? 'ph-x' : 'ph-list'"></i>
+                    </button>
+                </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <button onclick="toggleAdminModal()" class="bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center space-x-2 transition">
-                    <i class="fa-solid fa-plus-circle text-emerald-400"></i>
-                    <span>Add Property</span>
-                </button>
-                <a href="https://wa.me/2340000000000?text=Hello%20Amara,%20I%20am%20interested%20in%20learning%20more%20about%20your%20property%20listings." target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span class="hidden sm:inline">Chat with Agent</span>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" x-cloak class="lg:hidden bg-navy-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3 text-sm">
+            <a href="#home" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-500">Home</a>
+            <a href="#properties" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-500">Properties</a>
+            <a href="#lands" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-500">Lands</a>
+            <a href="#houses" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-500">Houses</a>
+            <a href="#about" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-500">About Amarachi</a>
+            <a href="#contact" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-500">Contact</a>
+            
+            <div class="pt-4 border-t border-slate-800 flex flex-col space-y-3">
+                <template x-if="!user">
+                    <button @click="mobileMenuOpen = false; openAuthModal('login')" class="w-full text-center py-2 rounded bg-navy-800 text-white font-medium">Login / Register</button>
+                </template>
+                <template x-if="user">
+                    <button @click="mobileMenuOpen = false; dashboardModalOpen = true" class="w-full text-center py-2 rounded bg-navy-800 text-gold-500 font-medium flex items-center justify-center space-x-2">
+                        <i class="ph-bold ph-user"></i>
+                        <span x-text="user.name + ' Dashboard'"></span>
+                    </button>
+                </template>
+                <a href="https://wa.me/2348134644098" target="_blank" class="w-full text-center py-2.5 rounded bg-emerald-600 text-white font-semibold flex items-center justify-center space-x-2">
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                    <span>Contact via WhatsApp</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Hero Banner -->
-    <section class="bg-emerald-900 text-white py-16 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
-        <div class="max-w-3xl mx-auto relative z-10">
-            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">Find Your Dream Property in Abuja</h1>
-            <p class="text-emerald-100 text-base sm:text-lg mb-8">Explore premium terrace duplexes, detached penthouses, and bungalows across Prime Abuja Locations.</p>
+    <!-- 3. HERO / LANDING SECTION -->
+    <section id="home" class="relative bg-hero min-h-[88vh] flex items-center justify-center text-white px-4 py-20">
+        <div class="max-w-4xl mx-auto text-center space-y-6">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 font-semibold text-xs tracking-widest uppercase">
+                NEFT Properties Abuja
+            </span>
             
-            <!-- Dynamic Search & Filter Bar -->
-            <div class="bg-white p-3 rounded-xl shadow-lg flex flex-col sm:flex-row gap-2 max-w-2xl mx-auto text-gray-800">
-                <input type="text" id="searchInput" placeholder="Search by estate or location..." class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                <select id="typeFilter" class="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-                    <option value="">All Property Types</option>
-                    <option value="Terrace Duplex">Terrace Duplex</option>
-                    <option value="Penthouse">Penthouse</option>
-                    <option value="Detached Duplex">Detached Duplex</option>
-                    <option value="Bungalow">Bungalow</option>
-                    <option value="Block of Flats">Block of Flats</option>
-                </select>
+            <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-wide">
+                Find the Right Property.<br><span class="text-gold-500">Build the Right Future.</span>
+            </h1>
+            
+            <p class="text-base sm:text-lg text-slate-200 max-w-2xl mx-auto font-light leading-relaxed">
+                Premium lands and properties in Abuja, carefully selected to help you own, invest, and build with absolute confidence.
+            </p>
+
+            <p class="text-xs sm:text-sm text-slate-300 italic font-light">
+                Explore verified property opportunities with <strong class="text-white font-semibold">F.O. Amarachi</strong>, Business Development Executive at NEFT Properties Abuja.
+            </p>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#properties" class="w-full sm:w-auto px-8 py-4 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold rounded-lg shadow-lg transition transform hover:-translate-y-0.5 text-sm uppercase tracking-wider text-center">
+                    View Available Properties
+                </a>
+                <button @click="openInspectionModal('General Query')" class="w-full sm:w-auto px-8 py-4 bg-navy-900/80 hover:bg-navy-900 text-white border border-slate-600 hover:border-gold-500 font-semibold rounded-lg shadow-lg transition text-sm text-center">
+                    Request an Inspection
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-900">Featured Listings</h2>
-            <span id="propertyCount" class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Showing all listings</span>
+    <!-- 4. PROPERTY LISTINGS SECTION (MARKETPLACE) -->
+    <section id="properties" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+            <div>
+                <span class="text-gold-600 font-bold text-xs uppercase tracking-widest">Marketplace</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold text-navy-900 mt-1">Explore Available Properties</h2>
+            </div>
+            <p class="text-slate-500 text-sm max-w-md mt-2 md:mt-0">
+                Filter through verified listings across prime locations in Abuja.
+            </p>
         </div>
 
-        <!-- Property Grid Area -->
-        <div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Property cards will render dynamically via JS -->
+        <!-- Filters -->
+        <div class="flex items-center space-x-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+            <template x-for="category in ['All', 'Lands', 'Houses', 'Apartments', 'Commercial', 'Residential']" :key="category">
+                <button 
+                    @click="activeFilter = category" 
+                    :class="activeFilter === category ? 'bg-navy-900 text-gold-500 border-navy-900' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'"
+                    class="px-5 py-2.5 rounded-full border text-xs font-semibold whitespace-nowrap transition shadow-sm"
+                    x-text="category">
+                </button>
+            </template>
         </div>
-    </main>
 
-    <!-- Admin Add Property Modal -->
-    <div id="adminModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="toggleAdminModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">
-                <i class="fa-solid fa-xmark"></i>
+        <!-- Property Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <template x-for="property in filteredProperties" :key="property.id">
+                <div class="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden flex flex-col transition hover:shadow-xl group">
+                    <!-- Image Box -->
+                    <div class="relative h-60 overflow-hidden bg-slate-900">
+                        <img :src="property.images[0]" :alt="property.title" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        
+                        <!-- Status & Category Badge -->
+                        <div class="absolute top-3 left-3 flex space-x-2">
+                            <span class="bg-navy-950/80 text-gold-400 text-[11px] font-bold px-3 py-1 rounded-md uppercase tracking-wide backdrop-blur-sm" x-text="property.category"></span>
+                            <template x-if="property.isSold">
+                                <span class="bg-red-600 text-white text-[11px] font-bold px-3 py-1 rounded-md uppercase tracking-wide">SOLD</span>
+                            </template>
+                        </div>
+
+                        <!-- Favorite Heart Button -->
+                        <button @click.stop="toggleFavorite(property.id)" class="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-full text-slate-700 shadow transition">
+                            <i class="ph-bold ph-heart text-lg" :class="isFavorite(property.id) ? 'text-red-500 fill-current' : 'text-slate-400'"></i>
+                        </button>
+
+                        <div class="absolute bottom-3 left-3 bg-navy-950/90 text-white px-3 py-1 rounded text-xs font-bold" x-text="formatCurrency(property.price)"></div>
+                    </div>
+
+                    <!-- Content Box -->
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="text-xs font-semibold text-gold-600 uppercase tracking-wider mb-1" x-text="property.type"></div>
+                            <h3 class="font-bold text-slate-900 text-lg leading-snug group-hover:text-gold-600 transition" x-text="property.title"></h3>
+                            <p class="text-slate-500 text-xs flex items-center mt-2">
+                                <i class="ph-bold ph-map-pin text-gold-600 mr-1.5 text-sm"></i>
+                                <span x-text="property.location"></span>
+                            </p>
+                        </div>
+
+                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed" x-text="property.description"></p>
+
+                        <!-- Features Pill Grid -->
+                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+                            <span class="flex items-center"><i class="ph-bold ph-frame-corners mr-1 text-slate-400"></i> <span x-text="property.size"></span></span>
+                            <template x-if="property.bedrooms">
+                                <span class="flex items-center"><i class="ph-bold ph-bed mr-1 text-slate-400"></i> <span x-text="property.bedrooms + ' Beds'"></span></span>
+                            </template>
+                            <template x-if="property.bathrooms">
+                                <span class="flex items-center"><i class="ph-bold ph-bathtub mr-1 text-slate-400"></i> <span x-text="property.bathrooms + ' Baths'"></span></span>
+                            </template>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <button @click="openDetailsModal(property)" class="w-full py-2.5 rounded bg-slate-100 hover:bg-slate-200 text-navy-900 font-semibold text-xs transition">
+                                View Details
+                            </button>
+                            <button @click="openInspectionModal(property.title)" class="w-full py-2.5 rounded bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold text-xs transition">
+                                Inspect
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+
+    <!-- 5. DEDICATED LAND SECTION -->
+    <section id="lands" class="bg-navy-900 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mb-12">
+                <span class="text-gold-500 font-bold text-xs uppercase tracking-widest">Land Acquisition</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold mt-1">Secure Your Piece of Abuja</h2>
+                <p class="text-slate-300 text-sm mt-3 leading-relaxed">
+                    Strategic land listings with verified title documentation, offering solid long-term development value and location security across key growth corridors in Abuja.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <template x-for="land in properties.filter(p => p.category === 'Lands')" :key="land.id">
+                    <div class="bg-navy-950 border border-slate-800 rounded-xl overflow-hidden flex flex-col justify-between p-6">
+                        <div>
+                            <div class="relative h-48 rounded-lg overflow-hidden mb-4">
+                                <img :src="land.images[0]" :alt="land.title" class="w-full h-full object-cover">
+                                <div class="absolute top-2 right-2 bg-gold-500 text-navy-950 font-bold text-[10px] uppercase px-2.5 py-1 rounded" x-text="land.size"></div>
+                            </div>
+                            <h3 class="font-bold text-lg text-white mb-1" x-text="land.title"></h3>
+                            <p class="text-gold-500 text-xs font-semibold mb-3" x-text="land.location"></p>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-4" x-text="land.description"></p>
+                            
+                            <div class="bg-navy-900 p-3 rounded text-xs space-y-1 mb-4">
+                                <div class="text-slate-400">Documentation / Title: <strong class="text-white" x-text="land.titleDoc || 'C of O / Verified Title'"></strong></div>
+                                <div class="text-slate-400">Potential: <strong class="text-white" x-text="land.type"></strong></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-lg font-bold text-gold-400 mb-3" x-text="formatCurrency(land.price)"></div>
+                            <button @click="openInspectionModal(land.title)" class="w-full py-3 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold rounded text-xs uppercase tracking-wider transition">
+                                Request Land Inspection
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. DEDICATED HOUSES / PROPERTY SECTION -->
+    <section id="houses" class="py-20 bg-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-gold-600 font-bold text-xs uppercase tracking-widest">Residential Real Estate</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold text-navy-900 mt-1">Find a Place You'll Be Proud to Call Home</h2>
+                <p class="text-slate-600 text-sm mt-2">
+                    Modern apartments, duplexes, and residential homes designed for premium comfort and high resale value.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <template x-for="house in properties.filter(p => p.category === 'Houses' || p.category === 'Apartments')" :key="house.id">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col md:flex-row">
+                        <div class="md:w-1/2 h-64 md:h-auto relative">
+                            <img :src="house.images[0]" :alt="house.title" class="w-full h-full object-cover">
+                        </div>
+                        <div class="md:w-1/2 p-6 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-gold-100 text-gold-700 px-2.5 py-1 rounded" x-text="house.category"></span>
+                                <h3 class="font-bold text-navy-900 text-xl mt-2" x-text="house.title"></h3>
+                                <p class="text-xs text-slate-500 mt-1 mb-3" x-text="house.location"></p>
+                                <p class="text-xs text-slate-600 leading-relaxed line-clamp-3 mb-4" x-text="house.description"></p>
+                                
+                                <div class="flex items-center space-x-4 text-xs text-slate-500 mb-4">
+                                    <span class="flex items-center"><i class="ph-bold ph-bed mr-1 text-gold-600"></i> <span x-text="house.bedrooms || '3'"></span> Beds</span>
+                                    <span class="flex items-center"><i class="ph-bold ph-bathtub mr-1 text-gold-600"></i> <span x-text="house.bathrooms || '3'"></span> Baths</span>
+                                    <span class="flex items-center"><i class="ph-bold ph-car mr-1 text-gold-600"></i> Parking</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="text-xl font-bold text-navy-900 mb-3" x-text="formatCurrency(house.price)"></div>
+                                <div class="flex space-x-2">
+                                    <button @click="openDetailsModal(house)" class="flex-1 py-2.5 bg-navy-900 hover:bg-navy-800 text-white font-semibold text-xs rounded transition">
+                                        Details
+                                    </button>
+                                    <button @click="openInspectionModal(house.title)" class="flex-1 py-2.5 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold text-xs rounded transition">
+                                        Inspect
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. ABOUT F.O. AMARACHI SECTION -->
+    <section id="about" class="py-20 bg-white border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Realtor Portrait Column -->
+                <div class="lg:col-span-5 relative">
+                    <div class="aspect-w-4 aspect-h-5 rounded-2xl overflow-hidden shadow-2xl bg-navy-900 border-4 border-white">
+                        <!-- User's direct portrait photo -->
+                        <img src="./amarachi.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80'" alt="F.O. Amarachi - Business Development Executive" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-gold-500 text-navy-950 p-6 rounded-xl shadow-lg hidden sm:block">
+                        <div class="font-heading font-bold text-2xl">100%</div>
+                        <div class="text-xs font-semibold uppercase tracking-wider">Verified Inspections</div>
+                    </div>
+                </div>
+
+                <!-- Realtor Info Column -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div>
+                        <span class="text-gold-600 font-bold text-xs uppercase tracking-widest">Professional Profile</span>
+                        <h2 class="font-heading text-3xl sm:text-4xl font-bold text-navy-900 mt-1">F.O. Amarachi</h2>
+                        <p class="text-sm font-semibold text-slate-500">Business Development Executive | NEFT Properties Abuja</p>
+                    </div>
+
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        F.O. Amarachi is a dedicated real estate consultant and Business Development Executive at NEFT Properties Abuja. Specializing in property acquisitions, land allocation, and residential investments, she assists private buyers, corporate organizations, and diaspora investors in navigating the Abuja property market safely and smoothly.
+                    </p>
+
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Her client-first approach emphasizes structural transparency, legal verification, and seamless physical inspections—ensuring every client acquires property aligned with their long-term security and equity goals.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-lg bg-slate-50 border border-slate-100">
+                            <i class="ph-bold ph-shield-check text-gold-600 text-xl mb-1"></i>
+                            <h4 class="font-bold text-xs text-navy-900">Verified Titles</h4>
+                            <p class="text-[11px] text-slate-500">Thorough legal & site checking.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-slate-50 border border-slate-100">
+                            <i class="ph-bold ph-handshake text-gold-600 text-xl mb-1"></i>
+                            <h4 class="font-bold text-xs text-navy-900">Guided Tours</h4>
+                            <p class="text-[11px] text-slate-500">Convenient physical site visits.</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex items-center space-x-4">
+                        <a href="https://wa.me/2348134644098?text=Hello%20F.O.%20Amarachi,%20I%20would%20like%20to%20consult%20with%20you%20regarding%20Abuja%20properties." 
+                           target="_blank" 
+                           class="inline-flex items-center space-x-2 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs uppercase tracking-wider transition shadow-md">
+                            <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                            <span>Chat on WhatsApp</span>
+                        </a>
+                        <a href="#contact" class="px-6 py-3.5 bg-navy-900 hover:bg-navy-800 text-white font-semibold rounded-lg text-xs transition">
+                            View Offices
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. WHY WORK WITH US SECTION -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-gold-600 font-bold text-xs uppercase tracking-widest">Client Value</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold text-navy-900 mt-1">Why Work With Us</h2>
+                <p class="text-slate-600 text-sm mt-2">Transparent, client-focused real estate guidance tailored to your needs.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-gold-100 rounded-lg flex items-center justify-center text-gold-700 text-2xl mb-4">
+                        <i class="ph-bold ph-house-line"></i>
+                    </div>
+                    <h3 class="font-bold text-navy-900 text-base mb-2">Carefully Selected Properties</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Explore property opportunities presented with clear information, genuine photographs, and detailed descriptions.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-gold-100 rounded-lg flex items-center justify-center text-gold-700 text-2xl mb-4">
+                        <i class="ph-bold ph-compass"></i>
+                    </div>
+                    <h3 class="font-bold text-navy-900 text-base mb-2">Professional Guidance</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Get dedicated assistance throughout your entire property search, inspection, and acquisition process.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-gold-100 rounded-lg flex items-center justify-center text-gold-700 text-2xl mb-4">
+                        <i class="ph-bold ph-calendar-check"></i>
+                    </div>
+                    <h3 class="font-bold text-navy-900 text-base mb-2">Property Inspections</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Request a physical inspection and arrange a convenient schedule to view property options in person.
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-gold-100 rounded-lg flex items-center justify-center text-gold-700 text-2xl mb-4">
+                        <i class="ph-bold ph-map-pin-line"></i>
+                    </div>
+                    <h3 class="font-bold text-navy-900 text-base mb-2">Abuja Opportunities</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Discover land and housing opportunities positioned in rapidly growing strategic zones across Abuja.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. CALL-TO-ACTION SECTION -->
+    <section class="bg-navy-950 py-20 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1920&q=80')] bg-cover bg-center"></div>
+        <div class="max-w-5xl mx-auto px-4 relative z-10 text-center space-y-6">
+            <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold">
+                Your Next Property Could Be Closer Than You Think.
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
+                Explore available properties or speak directly with F.O. Amarachi about your next real estate opportunity.
+            </p>
+            <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#properties" class="px-8 py-4 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold rounded-lg text-xs uppercase tracking-wider transition">
+                    Explore Properties
+                </a>
+                <a href="https://wa.me/2348134644098" target="_blank" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2">
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                    <span>Chat on WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. CONTACT & FOOTER SECTION -->
+    <footer id="contact" class="bg-navy-950 text-slate-300 pt-16 pb-12 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+                <!-- Col 1: Identity -->
+                <div class="space-y-3">
+                    <div class="font-heading font-bold text-lg text-white">F.O. AMARACHI</div>
+                    <p class="text-gold-500 font-medium">Business Development Executive</p>
+                    <p class="text-slate-400 leading-relaxed">NEFT Properties Abuja</p>
+                    <div class="pt-2">
+                        <a href="https://wa.me/2348134644098" target="_blank" class="text-emerald-400 hover:text-emerald-300 font-semibold flex items-center space-x-2 text-sm">
+                            <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                            <span>+234 813 464 4098</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Head Office -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-3">Head Office</h4>
+                    <p class="text-slate-400 leading-relaxed">
+                        Suite B, First Floor, Mazado Plaza,<br>
+                        Plot 874 Shettima Alimunguno Crescent,<br>
+                        behind Julius Berger Yard, Utako, Abuja.
+                    </p>
+                </div>
+
+                <!-- Col 3: Branch Office -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-3">Branch Office</h4>
+                    <p class="text-slate-400 leading-relaxed">
+                        Suite B003, Quad Plaza,<br>
+                        Plot 563 Ameh Ebute Street,<br>
+                        Wuye District, Abuja.
+                    </p>
+                </div>
+
+                <!-- Col 4: Quick Links -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-3">Navigation</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#home" class="hover:text-gold-500">Home</a></li>
+                        <li><a href="#properties" class="hover:text-gold-500">Properties Marketplace</a></li>
+                        <li><a href="#lands" class="hover:text-gold-500">Available Lands</a></li>
+                        <li><a href="#houses" class="hover:text-gold-500">Houses & Apartments</a></li>
+                        <li><a href="#about" class="hover:text-gold-500">About F.O. Amarachi</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-slate-500 text-[11px]">
+                <p>&copy; 2026 F.O. Amarachi - NEFT Properties Abuja. All rights reserved.</p>
+                <div class="mt-4 sm:mt-0 flex space-x-4">
+                    <a href="#" class="hover:text-slate-400">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-400">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: PROPERTY DETAILS & GALLERY MODAL -->
+    <div x-show="detailsModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="detailsModalOpen = false" class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto text-slate-800 p-6 relative shadow-2xl">
+            <button @click="detailsModalOpen = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl z-10">
+                <i class="ph-bold ph-x"></i>
             </button>
-            <h3 class="text-xl font-bold text-gray-900 mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-house-medical text-emerald-600"></i>
-                <span>Add New Property Listing</span>
-            </h3>
-            <p class="text-xs text-gray-500 mb-6">Enter property details below to add it directly to your live portfolio.</p>
 
-            <form id="addPropertyForm" onsubmit="handleFormSubmit(event)" class="space-y-4 text-sm">
+            <template x-if="selectedProperty">
                 <div>
-                    <label class="block font-medium text-gray-700 mb-1">Property Title</label>
-                    <input type="text" id="propTitle" required placeholder="e.g. 4 Bedroom Terrace Duplex" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
+                    <!-- Image Lightbox Gallery -->
+                    <div class="space-y-3 mb-6">
+                        <div class="h-80 w-full rounded-xl overflow-hidden bg-slate-900 relative">
+                            <img :src="selectedProperty.images[activeImageIndex]" class="w-full h-full object-cover">
+                            <span class="absolute bottom-3 right-3 bg-navy-950/80 text-white text-xs px-3 py-1 rounded" x-text="(activeImageIndex + 1) + ' / ' + selectedProperty.images.length"></span>
+                        </div>
+                        
+                        <!-- Thumbnail selector -->
+                        <div class="flex space-x-2 overflow-x-auto pb-2" x-show="selectedProperty.images.length > 1">
+                            <template x-for="(img, idx) in selectedProperty.images" :key="idx">
+                                <button @click="activeImageIndex = idx" class="w-16 h-16 rounded-md overflow-hidden border-2 flex-shrink-0" :class="activeImageIndex === idx ? 'border-gold-500' : 'border-transparent opacity-60'">
+                                    <img :src="img" class="w-full h-full object-cover">
+                                </button>
+                            </template>
+                        </div>
+                    </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Meta & Info -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 border-b border-slate-100 pb-4">
+                        <div>
+                            <span class="text-xs font-bold uppercase text-gold-600" x-text="selectedProperty.category"></span>
+                            <h2 class="text-2xl font-bold text-navy-900" x-text="selectedProperty.title"></h2>
+                            <p class="text-xs text-slate-500 flex items-center mt-1">
+                                <i class="ph-bold ph-map-pin mr-1 text-gold-600"></i>
+                                <span x-text="selectedProperty.location"></span>
+                            </p>
+                        </div>
+                        <div class="text-2xl font-bold text-navy-900" x-text="formatCurrency(selectedProperty.price)"></div>
+                    </div>
+
+                    <!-- Specs Table -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-lg mb-6 text-xs">
+                        <div><span class="text-slate-400 block">Property Type</span> <strong class="text-navy-900" x-text="selectedProperty.type"></strong></div>
+                        <div><span class="text-slate-400 block">Size / Area</span> <strong class="text-navy-900" x-text="selectedProperty.size"></strong></div>
+                        <div><span class="text-slate-400 block">Bedrooms</span> <strong class="text-navy-900" x-text="selectedProperty.bedrooms || 'N/A'"></strong></div>
+                        <div><span class="text-slate-400 block">Bathrooms</span> <strong class="text-navy-900" x-text="selectedProperty.bathrooms || 'N/A'"></strong></div>
+                    </div>
+
+                    <!-- Full Description -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-sm text-navy-900 mb-2">Full Description</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed whitespace-pre-line" x-text="selectedProperty.description"></p>
+                    </div>
+
+                    <div class="flex gap-3 pt-4 border-t border-slate-100">
+                        <button @click="detailsModalOpen = false; openInspectionModal(selectedProperty.title)" class="flex-1 py-3 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold text-xs uppercase tracking-wider rounded-lg transition">
+                            Schedule Inspection
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- MODAL 2: INSPECTION REQUEST FORM MODAL -->
+    <div x-show="inspectionModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="inspectionModalOpen = false" class="bg-white rounded-xl max-w-lg w-full p-6 relative shadow-2xl">
+            <button @click="inspectionModalOpen = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl">
+                <i class="ph-bold ph-x"></i>
+            </button>
+
+            <div class="mb-6">
+                <h3 class="font-heading text-xl font-bold text-navy-900">Schedule Property Inspection</h3>
+                <p class="text-xs text-slate-500 mt-1">Direct physical guided tour with F.O. Amarachi.</p>
+            </div>
+
+            <form @submit.prevent="submitInspection()">
+                <div class="space-y-3 text-xs">
                     <div>
-                        <label class="block font-medium text-gray-700 mb-1">Estate Name</label>
-                        <input type="text" id="propEstate" required placeholder="e.g. Platinum City" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <label class="block font-semibold text-slate-700 mb-1">Property Interested In</label>
+                        <input type="text" x-model="inspectionForm.property" readonly class="w-full bg-slate-100 border border-slate-200 px-3 py-2 rounded font-medium text-navy-900">
                     </div>
                     <div>
-                        <label class="block font-medium text-gray-700 mb-1">Property Type</label>
-                        <select id="propType" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none bg-white">
-                            <option value="Terrace Duplex">Terrace Duplex</option>
-                            <option value="Penthouse">Penthouse</option>
-                            <option value="Detached Duplex">Detached Duplex</option>
-                            <option value="Bungalow">Bungalow</option>
-                            <option value="Block of Flats">Block of Flats</option>
-                        </select>
+                        <label class="block font-semibold text-slate-700 mb-1">Full Name *</label>
+                        <input type="text" x-model="inspectionForm.name" required class="w-full border border-slate-300 px-3 py-2 rounded focus:ring-1 focus:ring-gold-500">
                     </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Email Address *</label>
+                            <input type="email" x-model="inspectionForm.email" required class="w-full border border-slate-300 px-3 py-2 rounded focus:ring-1 focus:ring-gold-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Phone Number *</label>
+                            <input type="tel" x-model="inspectionForm.phone" required class="w-full border border-slate-300 px-3 py-2 rounded focus:ring-1 focus:ring-gold-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Preferred Date *</label>
+                            <input type="date" x-model="inspectionForm.date" required class="w-full border border-slate-300 px-3 py-2 rounded focus:ring-1 focus:ring-gold-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Preferred Time *</label>
+                            <input type="time" x-model="inspectionForm.time" required class="w-full border border-slate-300 px-3 py-2 rounded focus:ring-1 focus:ring-gold-500">
+                        </div>
+                    </div>
                     <div>
-                        <label class="block font-medium text-gray-700 mb-1">Size (SQM)</label>
-                        <input type="text" id="propSize" required placeholder="e.g. 250 SQM" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <label class="block font-semibold text-slate-700 mb-1">Additional Message</label>
+                        <textarea x-model="inspectionForm.message" rows="3" class="w-full border border-slate-300 px-3 py-2 rounded focus:ring-1 focus:ring-gold-500" placeholder="Any specific requirements..."></textarea>
                     </div>
-                    <div>
-                        <label class="block font-medium text-gray-700 mb-1">Developer (Optional)</label>
-                        <input type="text" id="propDeveloper" placeholder="e.g. NEFT Properties Ltd" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700 mb-1">Location / Address</label>
-                    <input type="text" id="propLocation" required placeholder="e.g. Apo Wassa, off Apo–Karishi Road, FCT Abuja" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-
-                <div>
-                    <label class="block font-medium text-gray-700 mb-1">Image Choice</label>
-                    <div class="space-y-2">
-                        <input type="url" id="propImage" placeholder="Paste Image URL (Unsplash or direct link)" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                        <div class="text-center text-xs text-gray-400">OR Upload Local Image</div>
-                        <input type="file" id="propFile" accept="image/*" onchange="convertImageToBase64(event)" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                    <div class="flex items-center space-x-2 pt-1">
+                        <input type="checkbox" id="consent" required class="rounded border-slate-300 text-gold-600 focus:ring-gold-500">
+                        <label for="consent" class="text-[11px] text-slate-600">I consent to being contacted by NEFT Properties regarding this inquiry.</label>
                     </div>
                 </div>
 
-                <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="toggleAdminModal()" class="px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50">Cancel</button>
-                    <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium shadow">Save Property</button>
-                </div>
+                <button type="submit" class="w-full mt-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs uppercase tracking-wider transition flex items-center justify-center space-x-2">
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                    <span>Send Request via WhatsApp</span>
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 text-center sm:flex sm:justify-between sm:text-left">
-            <p class="text-sm">&copy; 2026 Mara Properties. Real Estate Consultant - Abuja, Nigeria.</p>
-            <p class="text-sm mt-2 sm:mt-0">Powered by NEFT Properties Ltd & Partner Estates</p>
-        </div>
-    </footer>
+    <!-- MODAL 3: AUTHENTICATION MODAL (LOGIN / REGISTER) -->
+    <div x-show="authModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="authModalOpen = false" class="bg-white rounded-xl max-w-sm w-full p-6 relative shadow-2xl">
+            <button @click="authModalOpen = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl"><i class="ph-bold ph-x"></i></button>
 
-    <!-- JavaScript Data and Rendering Engine -->
-    <script>
-        const initialProperties = [
-            // PLATINUM CITY, APO WASSA
-            { id: 1, title: "2 Bedroom Terrace Duplex", location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja", estate: "Platinum City", developer: "NEFT Properties Ltd (RC: 7052836)", size: "180 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" },
-            { id: 2, title: "4 Bedroom Terrace Duplex", location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja", estate: "Platinum City", developer: "NEFT Properties Ltd (RC: 7052836)", size: "250 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" },
-            { id: 3, title: "5 Bedroom Terrace Duplex with Attached BQ", location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja", estate: "Platinum City", developer: "NEFT Properties Ltd (RC: 7052836)", size: "300 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80" },
-            { id: 4, title: "4 Bedroom Fully Detached Penthouse with BQ", location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja", estate: "Platinum City", developer: "NEFT Properties Ltd (RC: 7052836)", size: "450 SQM", type: "Penthouse", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" },
-            { id: 5, title: "5 Bedroom Fully Detached Duplex with BQ", location: "Apo Wassa, off Apo–Karishi Road, FCT Abuja", estate: "Platinum City", developer: "NEFT Properties Ltd (RC: 7052836)", size: "550 SQM", type: "Detached Duplex", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80" },
+            <div class="flex border-b border-slate-200 mb-6 text-sm font-bold">
+                <button @click="authMode = 'login'" :class="authMode === 'login' ? 'border-b-2 border-gold-500 text-navy-900' : 'text-slate-400'" class="flex-1 pb-2 text-center">Login</button>
+                <button @click="authMode = 'register'" :class="authMode === 'register' ? 'border-b-2 border-gold-500 text-navy-900' : 'text-slate-400'" class="flex-1 pb-2 text-center">Register</button>
+            </div>
 
-            // PLAIN FIELD ESTATE, KUJE
-            { id: 6, title: "2 Bedroom Terrace Duplex with Attached BQ", location: "Behind Methodist Church, opp. Kuker Homes, Kuje", estate: "Plain Field Estate", size: "180 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" },
-            { id: 7, title: "4 Bedroom Terrace Duplex", location: "Behind Methodist Church, opp. Kuker Homes, Kuje", estate: "Plain Field Estate", size: "250 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" },
-            { id: 8, title: "2 Bedroom Fully Detached Bungalow", location: "Behind Methodist Church, opp. Kuker Homes, Kuje", estate: "Plain Field Estate", size: "250 SQM", type: "Bungalow", image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80" },
-            { id: 9, title: "3 Bedroom Semi-Detached Bungalow", location: "Behind Methodist Church, opp. Kuker Homes, Kuje", estate: "Plain Field Estate", size: "350 SQM", type: "Bungalow", image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80" },
-            { id: 10, title: "3 Bedroom Detached Bungalow with Detached BQ", location: "Behind Methodist Church, opp. Kuker Homes, Kuje", estate: "Plain Field Estate", size: "450 SQM", type: "Bungalow", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" },
-            { id: 11, title: "5 Bedroom Fully Detached Duplex with BQ", location: "Behind Methodist Church, opp. Kuker Homes, Kuje", estate: "Plain Field Estate", size: "550 SQM", type: "Detached Duplex", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80" },
-            { id: 12, title: "6 Units of 3 Bedroom Block of Flats", location: "Behind Methodist Church, opp. Kuker Homes, Kuje", estate: "Plain Field Estate", size: "1,000 SQM", type: "Block of Flats", image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" },
-
-            // DOUBLE KING ESTATE, GUZAPE
-            { id: 13, title: "4 Bedroom Terrace Duplex", location: "Guzape, FCT Abuja", estate: "Double King Estate", size: "250 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" },
-            { id: 14, title: "4 Bedroom Semi-Detached Penthouse", location: "Guzape, FCT Abuja", estate: "Double King Estate", size: "350 SQM", type: "Penthouse", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" },
-            { id: 15, title: "4 Bedroom Fully Detached Penthouse", location: "Guzape, FCT Abuja", estate: "Double King Estate", size: "500 SQM", type: "Penthouse", image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80" },
-            { id: 16, title: "5 Bedroom Fully Detached Duplex with 2-Room BQ", location: "Guzape, FCT Abuja", estate: "Double King Estate", size: "600 SQM", type: "Detached Duplex", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80" },
-
-            // TREASURE GATE ESTATE, DEI DEI
-            { id: 17, title: "2 Bedroom Terrace Duplex with Attached BQ", location: "Dei Dei, FCT Abuja", estate: "Treasure Gate Estate", size: "180 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" },
-            { id: 18, title: "4 Bedroom Terrace Duplex", location: "Dei Dei, FCT Abuja", estate: "Treasure Gate Estate", size: "250 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" },
-            { id: 19, title: "4 Bedroom Semi-Detached Penthouse", location: "Dei Dei, FCT Abuja", estate: "Treasure Gate Estate", size: "350 SQM", type: "Penthouse", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" },
-            { id: 20, title: "4 Bedroom Fully Detached Penthouse with BQ", location: "Dei Dei, FCT Abuja", estate: "Treasure Gate Estate", size: "450 SQM", type: "Penthouse", image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80" },
-            { id: 21, title: "5 Bedroom Fully Detached Duplex with 2 Bed BQ", location: "Dei Dei, FCT Abuja", estate: "Treasure Gate Estate", size: "550 SQM", type: "Detached Duplex", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80" },
-
-            // MERIDIAN CITY, PYAKASA
-            { id: 22, title: "2 Bedroom Terrace Duplex with Attached BQ", location: "After Mshel Court, Pyakasa, FCT Abuja", estate: "Meridian City", size: "180 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" },
-            { id: 23, title: "4 Bedroom Terrace Duplex", location: "After Mshel Court, Pyakasa, FCT Abuja", estate: "Meridian City", size: "250 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" },
-            { id: 24, title: "4 Bedroom Fully Detached Duplex with BQ", location: "After Mshel Court, Pyakasa, FCT Abuja", estate: "Meridian City", size: "400 SQM", type: "Detached Duplex", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80" },
-            { id: 25, title: "5 Bedroom Fully Detached Duplex with Detached BQ", location: "After Mshel Court, Pyakasa, FCT Abuja", estate: "Meridian City", size: "600 SQM", type: "Detached Duplex", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80" },
-
-            // ASOKORO EXTENSION
-            { id: 26, title: "2 Bedroom Terraced Duplex with Attached BQ", location: "Asokoro Extension, FCT Abuja", estate: "Asokoro Extension", size: "200 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" },
-            { id: 27, title: "5 Bedroom Terraced Duplex with Attached BQ", location: "Asokoro Extension, FCT Abuja", estate: "Asokoro Extension", size: "300 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80" },
-            { id: 28, title: "4 Bedroom Semi-Detached Duplex with BQ", location: "Asokoro Extension, FCT Abuja", estate: "Asokoro Extension", size: "400 SQM", type: "Semi-Detached Duplex", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" },
-            { id: 29, title: "5 Bedroom Detached Penthouse + Self-Contained BQ", location: "Asokoro Extension, FCT Abuja", estate: "Asokoro Extension", size: "500 SQM", type: "Penthouse", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80" },
-
-            // ESTORA RESIDENCE, MAITAMA 2
-            { id: 30, title: "4 Bedroom Terrace Duplex", location: "Garui Shere Road, behind Police School, Maitama 2", estate: "Estora Residence", size: "250 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" },
-            { id: 31, title: "3 Bedroom Detached Penthouse with 2 Rooms BQ", location: "Garui Shere Road, behind Police School, Maitama 2", estate: "Estora Residence", size: "450 SQM", type: "Penthouse", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" },
-            { id: 32, title: "5 Bedroom Detached Duplex with 2 Bedroom BQ", location: "Garui Shere Road, behind Police School, Maitama 2", estate: "Estora Residence", size: "600 SQM", type: "Detached Duplex", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80" },
-            { id: 33, title: "6 Units of 3 Bedroom Block of Flats", location: "Garui Shere Road, behind Police School, Maitama 2", estate: "Estora Residence", size: "1,000 SQM", type: "Block of Flats", image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" },
-
-            // DOUBLE GRACE DOMAIN, KURUDU
-            { id: 34, title: "2 Bedroom Terrace Duplex with Attached BQ", location: "Peace Land Estate, Kurudu, FCT Abuja", estate: "Double Grace Domain", size: "180 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" },
-            { id: 35, title: "2 Bedroom Fully Detached Bungalow", location: "Peace Land Estate, Kurudu, FCT Abuja", estate: "Double Grace Domain", size: "250 SQM", type: "Bungalow", image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80" },
-            { id: 36, title: "4 Bedroom Terrace Duplex", location: "Peace Land Estate, Kurudu, FCT Abuja", estate: "Double Grace Domain", size: "250 SQM", type: "Terrace Duplex", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" },
-            { id: 37, title: "4 Bedroom Semi-Detached Penthouse", location: "Peace Land Estate, Kurudu, FCT Abuja", estate: "Double Grace Domain", size: "350 SQM", type: "Penthouse", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" },
-            { id: 38, title: "3 Bedroom Detached Bungalow with Detached BQ", location: "Peace Land Estate, Kurudu, FCT Abuja", estate: "Double Grace Domain", size: "450 SQM", type: "Bungalow", image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80" },
-            { id: 39, title: "5 Bedroom Fully Detached Duplex with BQ", location: "Peace Land Estate, Kurudu, FCT Abuja", estate: "Double Grace Domain", size: "500 SQM", type: "Detached Duplex", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80" }
-        ];
-
-        // Load properties from LocalStorage or initialize
-        let properties = JSON.parse(localStorage.getItem('mara_properties')) || initialProperties;
-        let uploadedBase64Image = "";
-
-        // UI Rendering Function
-        function renderProperties(filteredList) {
-            const grid = document.getElementById('propertyGrid');
-            const countLabel = document.getElementById('propertyCount');
-            
-            grid.innerHTML = '';
-            countLabel.textContent = `Showing ${filteredList.length} property listings`;
-
-            if (filteredList.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-12 text-gray-500">
-                        <i class="fa-solid fa-house-circle-xmark text-4xl mb-3 text-gray-300"></i>
-                        <p class="text-lg font-medium">No properties match your search parameters.</p>
-                        <p class="text-sm">Try resetting filters or adjusting search text.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filteredList.forEach(item => {
-                const whatsappMessage = encodeURIComponent(`Hello Amara, I am interested in inquiring about the following property listing:\n\n*Property:* ${item.title}\n*Estate:* ${item.estate}\n*Size:* ${item.size}\n*Location:* ${item.location}`);
-                
-                const card = document.createElement('div');
-                card.className = 'property-card bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm flex flex-col justify-between relative group';
-                
-                card.innerHTML = `
+            <form @submit.prevent="handleAuth()">
+                <div class="space-y-3 text-xs">
+                    <template x-if="authMode === 'register'">
+                        <div>
+                            <label class="block font-semibold mb-1">Full Name</label>
+                            <input type="text" x-model="authForm.name" required class="w-full border px-3 py-2 rounded">
+                        </div>
+                    </template>
                     <div>
-                        <div class="relative h-48 overflow-hidden bg-gray-100">
-                            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
-                            <span class="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-semibold px-2.5 py-1 rounded shadow">
-                                ${item.estate}
-                            </span>
-                            <span class="absolute top-3 right-3 bg-gray-900/80 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded">
-                                ${item.size}
-                            </span>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2 leading-snug">${item.title}</h3>
-                            <p class="text-xs text-gray-500 mb-4 flex items-start space-x-1">
-                                <i class="fa-solid fa-location-dot text-emerald-600 mt-0.5"></i>
-                                <span>${item.location}</span>
-                            </p>
-                            ${item.developer ? `<p class="text-xs font-medium text-emerald-800 bg-emerald-50 p-2 rounded mb-3"><i class="fa-solid fa-shield-halved mr-1"></i> ${item.developer}</p>` : ''}
-                        </div>
+                        <label class="block font-semibold mb-1">Email Address</label>
+                        <input type="email" x-model="authForm.email" required class="w-full border px-3 py-2 rounded">
                     </div>
-                    <div class="px-5 pb-5 pt-0 flex gap-2">
-                        <a href="https://wa.me/2340000000000?text=${whatsappMessage}" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-3 rounded-lg text-sm flex items-center justify-center space-x-2 transition">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
-                            <span>Inquire</span>
-                        </a>
-                        <button onclick="deleteProperty(${item.id})" title="Delete Listing" class="px-3 py-2 text-gray-400 hover:text-red-600 border border-gray-200 hover:border-red-200 rounded-lg transition">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                    <div>
+                        <label class="block font-semibold mb-1">Password</label>
+                        <input type="password" x-model="authForm.password" required class="w-full border px-3 py-2 rounded">
                     </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
+                </div>
+                <button type="submit" class="w-full mt-6 py-2.5 bg-navy-900 hover:bg-navy-800 text-white font-bold rounded text-xs transition" x-text="authMode === 'login' ? 'Sign In' : 'Create Account'"></button>
+            </form>
+        </div>
+    </div>
 
-        // Filtering logic
-        function filterProperties() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const selectedType = document.getElementById('typeFilter').value;
+    <!-- MODAL 4: USER DASHBOARD MODAL -->
+    <div x-show="dashboardModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="dashboardModalOpen = false" class="bg-white rounded-xl max-w-2xl w-full p-6 relative shadow-2xl">
+            <button @click="dashboardModalOpen = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl"><i class="ph-bold ph-x"></i></button>
 
-            const filtered = properties.filter(item => {
-                const matchesSearch = item.title.toLowerCase().includes(searchTerm) || 
-                                      item.estate.toLowerCase().includes(searchTerm) || 
-                                      item.location.toLowerCase().includes(searchTerm);
-                const matchesType = selectedType === "" || item.type === selectedType;
+            <div class="flex items-center space-x-3 mb-6 pb-4 border-b">
+                <div class="w-10 h-10 bg-gold-100 text-gold-700 rounded-full flex items-center justify-center font-bold text-lg" x-text="user ? user.name.charAt(0) : 'U'"></div>
+                <div>
+                    <h3 class="font-bold text-navy-900 text-base" x-text="user ? user.name : 'Client'"></h3>
+                    <p class="text-xs text-slate-500" x-text="user ? user.email : ''"></p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-slate-500">Saved Properties (<span x-text="favorites.length"></span>)</h4>
                 
-                return matchesSearch && matchesType;
-            });
+                <div class="max-h-60 overflow-y-auto space-y-2">
+                    <template x-for="id in favorites" :key="id">
+                        <template x-for="prop in properties.filter(p => p.id === id)" :key="prop.id">
+                            <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border text-xs">
+                                <div>
+                                    <strong class="text-navy-900 block" x-text="prop.title"></strong>
+                                    <span class="text-slate-500" x-text="prop.location"></span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-bold text-navy-900" x-text="formatCurrency(prop.price)"></span>
+                                    <button @click="toggleFavorite(prop.id)" class="text-red-500 hover:text-red-700 p-1"><i class="ph-bold ph-trash"></i></button>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                </div>
 
-            renderProperties(filtered);
-        }
+                <div class="pt-4 border-t flex justify-between">
+                    <button @click="logout()" class="text-xs text-red-600 font-semibold">Sign Out</button>
+                    <button @click="dashboardModalOpen = false" class="text-xs bg-navy-900 text-white px-4 py-2 rounded">Close Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Toggle Modal Display
-        function toggleAdminModal() {
-            const modal = document.getElementById('adminModal');
-            modal.classList.toggle('hidden');
-        }
+    <!-- MODAL 5: ADMIN MANAGEMENT PANEL (Passcode: admin345) -->
+    <div x-show="adminModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="adminModalOpen = false" class="bg-white rounded-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto relative shadow-2xl">
+            <button @click="adminModalOpen = false" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-2xl"><i class="ph-bold ph-x"></i></button>
 
-        // Convert File to Base64 String
-        function convertImageToBase64(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    uploadedBase64Image = e.target.result;
-                };
-                reader.readAsDataURL(file);
+            <div class="flex justify-between items-center mb-6 pb-3 border-b">
+                <div>
+                    <h3 class="font-heading text-xl font-bold text-navy-900">Admin Property Management</h3>
+                    <p class="text-xs text-slate-500">Add, Edit, Mark as Sold, or Delete Listings</p>
+                </div>
+                <button @click="resetAdminForm(); showAddForm = true" class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold text-xs px-3 py-2 rounded flex items-center space-x-1">
+                    <i class="ph-bold ph-plus"></i>
+                    <span>Add Property</span>
+                </button>
+            </div>
+
+            <!-- Property Add / Edit Form -->
+            <div x-show="showAddForm" class="mb-8 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-navy-900 mb-4" x-text="isEditing ? 'Edit Property' : 'Add New Property'"></h4>
+                <form @submit.prevent="saveProperty()" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Property Title</label>
+                        <input type="text" x-model="adminForm.title" required class="w-full border px-3 py-2 rounded">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Category</label>
+                            <select x-model="adminForm.category" required class="w-full border px-3 py-2 rounded">
+                                <option value="Lands">Lands</option>
+                                <option value="Houses">Houses</option>
+                                <option value="Apartments">Apartments</option>
+                                <option value="Commercial">Commercial</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Type / Sub-Category</label>
+                            <input type="text" x-model="adminForm.type" placeholder="e.g. Residential Plot" required class="w-full border px-3 py-2 rounded">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Location</label>
+                            <input type="text" x-model="adminForm.location" required class="w-full border px-3 py-2 rounded">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Price (₦)</label>
+                            <input type="number" x-model.number="adminForm.price" required class="w-full border px-3 py-2 rounded">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Size</label>
+                            <input type="text" x-model="adminForm.size" placeholder="e.g. 600 sqm" required class="w-full border px-3 py-2 rounded">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Bedrooms</label>
+                            <input type="number" x-model.number="adminForm.bedrooms" class="w-full border px-3 py-2 rounded">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">Bathrooms</label>
+                            <input type="number" x-model.number="adminForm.bathrooms" class="w-full border px-3 py-2 rounded">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Title Document (for Lands)</label>
+                        <input type="text" x-model="adminForm.titleDoc" placeholder="e.g. C of O / Allocation" class="w-full border px-3 py-2 rounded">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Main Image URL</label>
+                        <input type="text" x-model="adminForm.mainImage" required class="w-full border px-3 py-2 rounded" placeholder="https://... or ./photo.jpg">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Description</label>
+                        <textarea x-model="adminForm.description" rows="3" required class="w-full border px-3 py-2 rounded"></textarea>
+                    </div>
+
+                    <div class="flex space-x-2 pt-2">
+                        <button type="submit" class="px-4 py-2 bg-navy-900 text-white font-bold rounded text-xs" x-text="isEditing ? 'Update Property' : 'Publish Property'"></button>
+                        <button type="button" @click="showAddForm = false" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded text-xs">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Existing Listings List -->
+            <div class="space-y-3">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-slate-500">Current Properties (<span x-text="properties.length"></span>)</h4>
+                
+                <template x-for="p in properties" :key="p.id">
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border text-xs">
+                        <div class="flex items-center space-x-3">
+                            <img :src="p.images[0]" class="w-12 h-12 rounded object-cover">
+                            <div>
+                                <div class="font-bold text-navy-900" x-text="p.title"></div>
+                                <div class="text-slate-500" x-text="p.location + ' • ' + formatCurrency(p.price)"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-2">
+                            <button @click="toggleSold(p.id)" class="px-2 py-1 text-[10px] font-bold rounded" :class="p.isSold ? 'bg-red-100 text-red-700' : 'bg-emerald-100 text-emerald-700'" x-text="p.isSold ? 'SOLD' : 'AVAILABLE'"></button>
+                            <button @click="editProperty(p)" class="p-1.5 text-slate-600 hover:text-navy-900"><i class="ph-bold ph-pencil"></i></button>
+                            <button @click="deleteProperty(p.id)" class="p-1.5 text-red-600 hover:text-red-800"><i class="ph-bold ph-trash"></i></button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN ALPINE.JS APP LOGIC -->
+    <script>
+        function realEstateApp() {
+            return {
+                mobileMenuOpen: false,
+                authModalOpen: false,
+                detailsModalOpen: false,
+                inspectionModalOpen: false,
+                dashboardModalOpen: false,
+                adminModalOpen: false,
+                showAddForm: false,
+                isEditing: false,
+
+                authMode: 'login',
+                activeFilter: 'All',
+                activeImageIndex: 0,
+                selectedProperty: null,
+                
+                user: JSON.parse(localStorage.getItem('neft_user')) || null,
+                favorites: JSON.parse(localStorage.getItem('neft_favorites')) || [],
+
+                authForm: { name: '', email: '', password: '' },
+                inspectionForm: { property: '', name: '', email: '', phone: '', date: '', time: '', message: '' },
+                
+                adminForm: {
+                    id: null,
+                    title: '',
+                    category: 'Lands',
+                    type: 'Residential',
+                    location: '',
+                    price: 0,
+                    size: '',
+                    bedrooms: null,
+                    bathrooms: null,
+                    titleDoc: '',
+                    mainImage: '',
+                    description: ''
+                },
+
+                // Default realistic placeholder properties database
+                properties: JSON.parse(localStorage.getItem('neft_properties')) || [
+                    {
+                        id: 1,
+                        title: 'Prime Residential Plot',
+                        category: 'Lands',
+                        type: 'Residential Plot',
+                        location: 'Kyami, District, Abuja',
+                        price: 18000000,
+                        size: '500 sqm',
+                        titleDoc: 'Government Allocation / C of O',
+                        description: 'A flat, ready-to-build plot in a rapidly developing residential neighborhood in Kyami, close to main transit routes and amenities.',
+                        images: ['https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80', 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&q=80'],
+                        isSold: false
+                    },
+                    {
+                        id: 2,
+                        title: 'Modern 4-Bedroom Semi-Detached Duplex',
+                        category: 'Houses',
+                        type: 'Fully Detached Duplex',
+                        location: 'Wuye District, Abuja',
+                        price: 130000000,
+                        size: '450 sqm',
+                        bedrooms: 4,
+                        bathrooms: 4,
+                        description: 'Contemporary architectural design featuring all en-suite bedrooms, fitted kitchen, private parking, and high-end finishes throughout.',
+                        images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80'],
+                        isSold: false
+                    },
+                    {
+                        id: 3,
+                        title: 'Commercial Land Plot',
+                        category: 'Lands',
+                        type: 'Commercial',
+                        location: 'Dei Dei, Abuja',
+                        price: 35000000,
+                        size: '1,200 sqm',
+                        titleDoc: 'Right of Occupancy (R of O)',
+                        description: 'Strategic commercial plot along a major access corridor in Dei Dei, perfect for plazas, warehouses, or corporate offices.',
+                        images: ['https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80'],
+                        isSold: false
+                    },
+                    {
+                        id: 4,
+                        title: 'Luxury 3-Bedroom Apartment',
+                        category: 'Apartments',
+                        type: 'Luxury Apartment',
+                        location: 'Utako, Abuja',
+                        price: 75000000,
+                        size: '220 sqm',
+                        bedrooms: 3,
+                        bathrooms: 3,
+                        description: 'Spacious 3-bedroom apartment with 24/7 security, backup power, dedicated parking, and premium interior fittings.',
+                        images: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80'],
+                        isSold: false
+                    }
+                ],
+
+                get filteredProperties() {
+                    if (this.activeFilter === 'All') return this.properties;
+                    return this.properties.filter(p => p.category === this.activeFilter);
+                },
+
+                formatCurrency(amount) {
+                    return '₦' + Number(amount).toLocaleString();
+                },
+
+                openDetailsModal(property) {
+                    this.selectedProperty = property;
+                    this.activeImageIndex = 0;
+                    this.detailsModalOpen = true;
+                },
+
+                openInspectionModal(propertyTitle) {
+                    this.inspectionForm.property = propertyTitle;
+                    if(this.user) {
+                        this.inspectionForm.name = this.user.name || '';
+                        this.inspectionForm.email = this.user.email || '';
+                    }
+                    this.inspectionModalOpen = true;
+                },
+
+                submitInspection() {
+                    const message = `Hello F.O. Amarachi, I am interested in inspecting ${this.inspectionForm.property}.%0A%0AName: ${encodeURIComponent(this.inspectionForm.name)}%0AEmail: ${encodeURIComponent(this.inspectionForm.email)}%0APhone: ${encodeURIComponent(this.inspectionForm.phone)}%0APreferred Date: ${this.inspectionForm.date}%0APreferred Time: ${this.inspectionForm.time}%0A%0AAdditional Message:%0A${encodeURIComponent(this.inspectionForm.message)}%0A%0AI would like to schedule an inspection.`;
+                    
+                    const whatsappUrl = `https://wa.me/2348134644098?text=${message}`;
+                    window.open(whatsappUrl, '_blank');
+                    this.inspectionModalOpen = false;
+                },
+
+                // Authentication Handlers
+                openAuthModal(mode) {
+                    this.authMode = mode;
+                    this.authModalOpen = true;
+                },
+
+                handleAuth() {
+                    this.user = {
+                        name: this.authForm.name || this.authForm.email.split('@')[0],
+                        email: this.authForm.email
+                    };
+                    localStorage.setItem('neft_user', JSON.stringify(this.user));
+                    this.authModalOpen = false;
+                },
+
+                logout() {
+                    this.user = null;
+                    localStorage.removeItem('neft_user');
+                    this.dashboardModalOpen = false;
+                },
+
+                // Favorites Handlers
+                toggleFavorite(id) {
+                    if (this.favorites.includes(id)) {
+                        this.favorites = this.favorites.filter(fId => fId !== id);
+                    } else {
+                        this.favorites.push(id);
+                    }
+                    localStorage.setItem('neft_favorites', JSON.stringify(this.favorites));
+                },
+
+                isFavorite(id) {
+                    return this.favorites.includes(id);
+                },
+
+                // Admin Security & Management
+                checkAdminAccess() {
+                    const pass = prompt("Enter Admin Passcode:");
+                    if (pass === "admin345") {
+                        this.adminModalOpen = true;
+                    } else if (pass !== null) {
+                        alert("Incorrect passcode!");
+                    }
+                },
+
+                saveProperty() {
+                    if (this.isEditing) {
+                        const index = this.properties.findIndex(p => p.id === this.adminForm.id);
+                        if (index !== -1) {
+                            this.properties[index] = {
+                                ...this.properties[index],
+                                title: this.adminForm.title,
+                                category: this.adminForm.category,
+                                type: this.adminForm.type,
+                                location: this.adminForm.location,
+                                price: Number(this.adminForm.price),
+                                size: this.adminForm.size,
+                                bedrooms: this.adminForm.bedrooms,
+                                bathrooms: this.adminForm.bathrooms,
+                                titleDoc: this.adminForm.titleDoc,
+                                description: this.adminForm.description,
+                                images: [this.adminForm.mainImage]
+                            };
+                        }
+                    } else {
+                        const newProp = {
+                            id: Date.now(),
+                            title: this.adminForm.title,
+                            category: this.adminForm.category,
+                            type: this.adminForm.type,
+                            location: this.adminForm.location,
+                            price: Number(this.adminForm.price),
+                            size: this.adminForm.size,
+                            bedrooms: this.adminForm.bedrooms,
+                            bathrooms: this.adminForm.bathrooms,
+                            titleDoc: this.adminForm.titleDoc,
+                            description: this.adminForm.description,
+                            images: [this.adminForm.mainImage],
+                            isSold: false
+                        };
+                        this.properties.unshift(newProp);
+                    }
+
+                    this.saveToLocalStorage();
+                    this.resetAdminForm();
+                    this.showAddForm = false;
+                },
+
+                editProperty(p) {
+                    this.isEditing = true;
+                    this.adminForm = {
+                        id: p.id,
+                        title: p.title,
+                        category: p.category,
+                        type: p.type,
+                        location: p.location,
+                        price: p.price,
+                        size: p.size,
+                        bedrooms: p.bedrooms,
+                        bathrooms: p.bathrooms,
+                        titleDoc: p.titleDoc || '',
+                        mainImage: p.images[0],
+                        description: p.description
+                    };
+                    this.showAddForm = true;
+                },
+
+                toggleSold(id) {
+                    const prop = this.properties.find(p => p.id === id);
+                    if (prop) {
+                        prop.isSold = !prop.isSold;
+                        this.saveToLocalStorage();
+                    }
+                },
+
+                deleteProperty(id) {
+                    if (confirm("Are you sure you want to delete this property?")) {
+                        this.properties = this.properties.filter(p => p.id !== id);
+                        this.saveToLocalStorage();
+                    }
+                },
+
+                resetAdminForm() {
+                    this.isEditing = false;
+                    this.adminForm = {
+                        id: null,
+                        title: '',
+                        category: 'Lands',
+                        type: 'Residential',
+                        location: '',
+                        price: 0,
+                        size: '',
+                        bedrooms: null,
+                        bathrooms: null,
+                        titleDoc: '',
+                        mainImage: '',
+                        description: ''
+                    };
+                },
+
+                saveToLocalStorage() {
+                    localStorage.setItem('neft_properties', JSON.stringify(this.properties));
+                }
             }
         }
-
-        // Add Property Form Submission
-        function handleFormSubmit(event) {
-            event.preventDefault();
-
-            const imageUrl = document.getElementById('propImage').value;
-            const finalImage = uploadedBase64Image || imageUrl || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80";
-
-            const newProperty = {
-                id: Date.now(),
-                title: document.getElementById('propTitle').value,
-                estate: document.getElementById('propEstate').value,
-                type: document.getElementById('propType').value,
-                size: document.getElementById('propSize').value,
-                developer: document.getElementById('propDeveloper').value || "",
-                location: document.getElementById('propLocation').value,
-                image: finalImage
-            };
-
-            properties.unshift(newProperty);
-            localStorage.setItem('mara_properties', JSON.stringify(properties));
-
-            // Reset form
-            document.getElementById('addPropertyForm').reset();
-            uploadedBase64Image = "";
-            toggleAdminModal();
-            filterProperties();
-        }
-
-        // Delete Property
-        function deleteProperty(id) {
-            if (confirm("Are you sure you want to delete this property listing?")) {
-                properties = properties.filter(p => p.id !== id);
-                localStorage.setItem('mara_properties', JSON.stringify(properties));
-                filterProperties();
-            }
-        }
-
-        // Event listeners
-        document.getElementById('searchInput').addEventListener('input', filterProperties);
-        document.getElementById('typeFilter').addEventListener('change', filterProperties);
-
-        // Initial render on page load
-        renderProperties(properties);
     </script>
 </body>
 </html>
