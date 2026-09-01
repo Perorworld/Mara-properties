@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Optimization -->
+    <title>F.O. Amarachi | Lands & Properties in Abuja | NEFT Properties</title>
+    <meta name="description" content="Discover premium lands and properties in Abuja with F.O. Amarachi, Business Development Executive at NEFT Properties. Explore available properties and request an inspection today.">
+    <meta property="og:title" content="F.O. Amarachi | Lands & Properties in Abuja | NEFT Properties">
+    <meta property="og:description" content="Discover premium lands and properties in Abuja. Explore verified residential and commercial opportunities with F.O. Amarachi.">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#0F172A',
+                            900: '#0B1120',
+                            950: '#050811',
+                        },
+                        gold: {
+                            400: '#FACC15',
+                            500: '#D97706',
+                            600: '#B45309',
+                            champagne: '#F3E5AB'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Alpine.js & Supabase JS SDK -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-gold-500 selection:text-white"
+      x-data="realEstateApp()"
+      x-init="initApp()">
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a :href="'https://wa.me/2348134644098?text=' + encodeURIComponent('Hello F.O. Amarachi, I am reaching out regarding property inquiries on your website.')" 
+       target="_blank" 
+       aria-label="Chat on WhatsApp"
+       class="fixed bottom-6 right-6 z-50 bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-110">
+        <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
+    </a>
+
+    <!-- 2. NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md border-b border-slate-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex flex-col">
+                <span class="font-heading text-xl font-bold tracking-wider text-gold-champagne">F.O. AMARACHI</span>
+                <span class="text-xs tracking-widest text-slate-400 uppercase">NEFT Properties Abuja</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#home" class="hover:text-gold-400 transition-colors">Home</a>
+                <a href="#properties" class="hover:text-gold-400 transition-colors">Properties</a>
+                <a href="#lands" class="hover:text-gold-400 transition-colors">Lands</a>
+                <a href="#houses" class="hover:text-gold-400 transition-colors">Houses</a>
+                <a href="#about" class="hover:text-gold-400 transition-colors">About Amarachi</a>
+                <a href="#contact" class="hover:text-gold-400 transition-colors">Contact</a>
+            </nav>
+
+            <div class="hidden md:flex items-center space-x-4">
+                <template x-if="!user">
+                    <button @click="authModalOpen = true" class="text-sm px-4 py-2 text-slate-300 hover:text-white transition">Sign In</button>
+                </template>
+                <template x-if="user">
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="text-sm px-4 py-2 bg-slate-800 rounded-md border border-slate-700 flex items-center space-x-2">
+                            <i class="ph ph-user"></i>
+                            <span x-text="user.email.split('@')[0]"></span>
+                        </button>
+                        <div x-show="open" @click.outside="open = false" class="absolute right-0 mt-2 w-48 bg-navy-900 border border-slate-800 rounded-md shadow-xl py-2">
+                            <button @click="activeTab = 'favorites'; dashboardModalOpen = true; open = false;" class="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-800">Saved Properties</button>
+                            <button @click="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-800">Logout</button>
+                        </div>
+                    </div>
+                </template>
+                <a :href="'https://wa.me/2348134644098'" target="_blank" class="bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold text-sm px-4 py-2.5 rounded-md transition shadow-md flex items-center space-x-2">
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                    <span>+234 813 464 4098</span>
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-2xl text-slate-300 hover:text-white">
+                <i class="ph" :class="mobileMenuOpen ? 'ph-x' : 'ph-list'"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div x-show="mobileMenuOpen" class="md:hidden bg-navy-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Home</a>
+            <a href="#properties" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Properties</a>
+            <a href="#lands" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Lands</a>
+            <a href="#houses" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Houses</a>
+            <a href="#about" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">About Amarachi</a>
+            <a href="#contact" @click="mobileMenuOpen = false" class="block py-2 text-slate-300 hover:text-gold-400">Contact</a>
+            <div class="pt-4 border-t border-slate-800 flex flex-col space-y-3">
+                <template x-if="!user">
+                    <button @click="authModalOpen = true; mobileMenuOpen = false;" class="w-full text-center py-2 border border-slate-700 rounded-md text-slate-300">Sign In / Register</button>
+                </template>
+                <a :href="'https://wa.me/2348134644098'" target="_blank" class="w-full text-center bg-gold-500 text-navy-950 font-semibold py-2.5 rounded-md">Chat on WhatsApp</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. HERO / LANDING SECTION -->
+    <section id="home" class="relative min-h-[85vh] flex items-center justify-center bg-navy-950 text-white">
+        <!-- Overlay Background -->
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
+             style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/60 to-transparent"></div>
+
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center py-20">
+            <span class="inline-block px-4 py-1.5 mb-6 text-xs font-semibold uppercase tracking-widest bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded-full">
+                NEFT Properties Abuja
+            </span>
+            <h1 class="font-heading text-4xl sm:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
+                Find the Right Property.<br><span class="text-gold-champagne">Build the Right Future.</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-4 font-light">
+                Premium lands and properties in Abuja, carefully selected to help you own, invest and build with confidence.
+            </p>
+            <p class="text-sm sm:text-base text-slate-400 mb-10">
+                Explore verified property opportunities with F.O. Amarachi, Business Development Executive at NEFT Properties Abuja.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#properties" class="w-full sm:w-auto px-8 py-4 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold rounded-lg transition-all shadow-lg hover:shadow-gold-500/20 text-center">
+                    View Available Properties
+                </a>
+                <button @click="openInspectionModal('General Query')" class="w-full sm:w-auto px-8 py-4 bg-slate-800/80 hover:bg-slate-800 text-white border border-slate-700 font-semibold rounded-lg transition-all backdrop-blur-sm text-center">
+                    Request an Inspection
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. PROPERTY LISTINGS SECTION -->
+    <section id="properties" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <h2 class="font-heading text-3xl font-bold text-navy-900">Explore Available Properties</h2>
+                <p class="text-slate-600 mt-2">Browse our curated listing of verified Abuja plots, luxury houses, and commercial spaces.</p>
+            </div>
+            <!-- Category Filters -->
+            <div class="mt-6 md:mt-0 flex flex-wrap gap-2">
+                <template x-for="cat in ['All', 'Lands', 'Houses', 'Apartments', 'Commercial', 'Residential']">
+                    <button @click="activeFilter = cat" 
+                            :class="activeFilter === cat ? 'bg-navy-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'"
+                            class="px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                            x-text="cat"></button>
+                </template>
+            </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <template x-for="property in filteredProperties" :key="property.id">
+                <div class="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="relative h-64 overflow-hidden bg-slate-100">
+                        <img :src="property.images[0]" :alt="property.title" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <span class="absolute top-4 left-4 bg-navy-900/80 backdrop-blur-md text-gold-champagne text-xs font-bold px-3 py-1 rounded-full" x-text="property.type"></span>
+                        <button @click="toggleFavorite(property.id)" class="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-md rounded-full text-slate-700 hover:text-red-500 transition">
+                            <i class="ph-fill ph-heart" :class="isFavorite(property.id) ? 'text-red-500' : 'text-slate-400'"></i>
+                        </button>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-navy-900 line-clamp-1" x-text="property.title"></h3>
+                            </div>
+                            <p class="text-sm text-slate-500 mb-3 flex items-center gap-1">
+                                <i class="ph ph-map-pin text-gold-500"></i> <span x-text="property.location"></span>
+                            </p>
+                            <p class="text-2xl font-bold text-gold-600 mb-4" x-text="'₦' + property.price.toLocaleString()"></p>
+                            <p class="text-sm text-slate-600 line-clamp-2 mb-4" x-text="property.description"></p>
+                        </div>
+                        
+                        <div>
+                            <div class="border-t border-slate-100 pt-4 mb-4 flex items-center justify-between text-xs text-slate-500">
+                                <span x-show="property.bedrooms" class="flex items-center gap-1"><i class="ph ph-bed"></i> <span x-text="property.bedrooms + ' Beds'"></span></span>
+                                <span x-show="property.bathrooms" class="flex items-center gap-1"><i class="ph ph-drop"></i> <span x-text="property.bathrooms + ' Baths'"></span></span>
+                                <span x-show="property.size" class="flex items-center gap-1"><i class="ph ph-bounding-box"></i> <span x-text="property.size"></span></span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <button @click="openDetails(property)" class="px-3 py-2 border border-navy-900 text-navy-900 font-semibold rounded text-xs text-center hover:bg-navy-900 hover:text-white transition">View Details</button>
+                                <button @click="openInspectionModal(property.title)" class="px-3 py-2 bg-gold-500 text-navy-950 font-bold rounded text-xs text-center hover:bg-gold-600 transition">Inspect</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+
+    <!-- 8 & 9. DEDICATED SECTIONS FOR LANDS & HOUSES -->
+    <section id="lands" class="bg-slate-900 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mb-12">
+                <span class="text-gold-400 text-xs font-bold tracking-widest uppercase">Investment Opportunities</span>
+                <h2 class="font-heading text-3xl font-bold mt-2">Secure Your Piece of Abuja</h2>
+                <p class="text-slate-400 mt-2">Strategic plots situated in rapidly expanding development corridors, offering verified land titles and outstanding capital growth prospects.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <template x-for="land in properties.filter(p => p.category === 'Lands')" :key="land.id">
+                    <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 flex flex-col md:flex-row">
+                        <img :src="land.images[0]" :alt="land.title" class="md:w-1/2 h-64 md:h-auto object-cover">
+                        <div class="p-6 flex flex-col justify-between md:w-1/2">
+                            <div>
+                                <h3 class="font-bold text-xl text-white" x-text="land.title"></h3>
+                                <p class="text-gold-400 font-bold text-lg mt-2" x-text="'₦' + land.price.toLocaleString()"></p>
+                                <p class="text-xs text-slate-400 mt-1" x-text="'Size: ' + land.size"></p>
+                                <p class="text-sm text-slate-300 mt-3" x-text="land.description"></p>
+                            </div>
+                            <button @click="openInspectionModal(land.title)" class="mt-6 w-full py-2.5 bg-gold-500 text-navy-950 font-bold text-sm rounded hover:bg-gold-400 transition">Schedule Land Tour</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. ABOUT F.O. AMARACHI -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="aspect-w-4 aspect-h-5 rounded-2xl overflow-hidden bg-slate-100 shadow-2xl border-4 border-white">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" alt="F.O. Amarachi - NEFT Properties Abuja" class="w-full h-[500px] object-cover">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 bg-navy-900 text-white p-6 rounded-xl shadow-xl hidden sm:block">
+                        <p class="font-heading text-xl font-bold text-gold-champagne">NEFT Properties</p>
+                        <p class="text-xs text-slate-400">Abuja Real Estate Advisory</p>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-gold-600 tracking-widest uppercase">Meet Your Realtor</span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-bold text-navy-900 mt-2 mb-4">F.O. Amarachi</h2>
+                    <p class="text-slate-500 font-medium mb-6">Business Development Executive at NEFT Properties Abuja</p>
+                    <div class="space-y-4 text-slate-600 leading-relaxed">
+                        <p>With deep structural insight into the Abuja real estate landscape, I help individuals, families, and corporate investors navigate property acquisition with absolute transparency and confidence.</p>
+                        <p>Whether you are searching for strategic land opportunities in developing corridors or luxury residential structures designed for home ownership, my mandate is to ensure every deal is legally verified, smooth, and aligned with your portfolio goals.</p>
+                    </div>
+                    <div class="mt-8 flex items-center space-x-4">
+                        <a :href="'https://wa.me/2348134644098?text=' + encodeURIComponent('Hello Amarachi, I would like to schedule a personal real estate consultation.')" target="_blank" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md transition flex items-center gap-2">
+                            <i class="ph-bold ph-whatsapp-logo text-xl"></i>
+                            <span>Chat on WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. WHY WORK WITH US -->
+    <section class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="font-heading text-3xl font-bold text-navy-900">Why Work With Us</h2>
+                <p class="text-slate-600 mt-2">Professional, verified, and client-centric real estate solutions in Abuja.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-shield-check"></i></div>
+                    <h3 class="font-bold text-lg text-navy-900 mb-2">Carefully Selected Properties</h3>
+                    <p class="text-slate-600 text-sm">Explore property opportunities presented with clear information and detailed descriptions.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-user-focus"></i></div>
+                    <h3 class="font-bold text-lg text-navy-900 mb-2">Professional Guidance</h3>
+                    <p class="text-slate-600 text-sm">Get assistance throughout your property search and decision-making process.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-calendar-check"></i></div>
+                    <h3 class="font-bold text-lg text-navy-900 mb-2">Property Inspections</h3>
+                    <p class="text-slate-600 text-sm">Request an inspection and arrange a convenient time to physically view a property.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-buildings"></i></div>
+                    <h3 class="font-bold text-lg text-navy-900 mb-2">Abuja Opportunities</h3>
+                    <p class="text-slate-600 text-sm">Discover land and housing opportunities across strategic locations in Abuja.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm lg:col-span-2">
+                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-handshake"></i></div>
+                    <h3 class="font-bold text-lg text-navy-900 mb-2">Client-Focused Service</h3>
+                    <p class="text-slate-600 text-sm">Make the property search process simple, transparent, and completely convenient from inquiry to execution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. CALL-TO-ACTION SECTION -->
+    <section class="relative py-20 bg-navy-950 text-white overflow-hidden">
+        <div class="relative max-w-5xl mx-auto px-4 text-center z-10">
+            <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-4">Your Next Property Could Be Closer Than You Think.</h2>
+            <p class="text-slate-300 max-w-2xl mx-auto mb-8">Explore available properties or speak directly with F.O. Amarachi about your next real estate opportunity.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#properties" class="px-8 py-4 bg-gold-500 text-navy-950 font-bold rounded-lg hover:bg-gold-400 transition">Explore Properties</a>
+                <a :href="'https://wa.me/2348134644098'" target="_blank" class="px-8 py-4 bg-emerald-600 text-white font-bold rounded-lg hover:bg-emerald-700 transition flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-whatsapp-logo"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 13. FOOTER -->
+    <footer id="contact" class="bg-navy-900 text-slate-400 border-t border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-2">
+                <span class="font-heading text-lg font-bold text-gold-champagne block">F.O. AMARACHI</span>
+                <p class="text-xs text-slate-500 uppercase tracking-widest mt-1">Business Development Executive | NEFT Properties Abuja</p>
+                <p class="mt-4 text-sm max-w-sm">Assisting buyers and investors in acquiring verified properties and strategic land across Abuja.</p>
+            </div>
+            <div>
+                <h4 class="text-white text-sm font-semibold mb-4">Quick Links</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#home" class="hover:text-gold-400">Home</a></li>
+                    <li><a href="#properties" class="hover:text-gold-400">Properties</a></li>
+                    <li><a href="#lands" class="hover:text-gold-400">Lands</a></li>
+                    <li><a href="#about" class="hover:text-gold-400">About Amarachi</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white text-sm font-semibold mb-4">Contact Info</h4>
+                <p class="text-sm">Abuja, FCT, Nigeria</p>
+                <p class="text-sm mt-2">WhatsApp: <a href="https://wa.me/2348134644098" class="text-gold-400 hover:underline">+234 813 464 4098</a></p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-800 text-xs text-center text-slate-600">
+            &copy; 2026 NEFT Properties Abuja / F.O. Amarachi. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- 4 & 5. PROPERTY DETAILS & INSPECTION MODAL -->
+    <div x-show="detailsModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="detailsModalOpen = false" class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8">
+            <template x-if="selectedProperty">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-xs text-gold-600 font-bold uppercase tracking-wider" x-text="selectedProperty.type"></span>
+                            <h2 class="font-heading text-2xl font-bold text-navy-900" x-text="selectedProperty.title"></h2>
+                            <p class="text-sm text-slate-500" x-text="selectedProperty.location"></p>
+                        </div>
+                        <button @click="detailsModalOpen = false" class="text-slate-400 hover:text-slate-600 text-2xl"><i class="ph ph-x"></i></button>
+                    </div>
+
+                    <!-- Gallery Carousel -->
+                    <div class="relative h-80 bg-slate-100 rounded-lg overflow-hidden mb-6">
+                        <img :src="selectedProperty.images[activeImageIndex]" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 flex justify-between items-center px-4">
+                            <button @click="activeImageIndex = (activeImageIndex - 1 + selectedProperty.images.length) % selectedProperty.images.length" class="p-2 bg-black/50 text-white rounded-full"><i class="ph ph-caret-left"></i></button>
+                            <button @click="activeImageIndex = (activeImageIndex + 1) % selectedProperty.images.length" class="p-2 bg-black/50 text-white rounded-full"><i class="ph ph-caret-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 p-4 bg-slate-50 rounded-lg text-center text-sm">
+                        <div><span class="block text-xs text-slate-400">Price</span><span class="font-bold text-navy-900" x-text="'₦' + selectedProperty.price.toLocaleString()"></span></div>
+                        <div><span class="block text-xs text-slate-400">Size</span><span class="font-bold text-navy-900" x-text="selectedProperty.size"></span></div>
+                        <div x-show="selectedProperty.bedrooms"><span class="block text-xs text-slate-400">Bedrooms</span><span class="font-bold text-navy-900" x-text="selectedProperty.bedrooms"></span></div>
+                        <div x-show="selectedProperty.bathrooms"><span class="block text-xs text-slate-400">Bathrooms</span><span class="font-bold text-navy-900" x-text="selectedProperty.bathrooms"></span></div>
+                    </div>
+
+                    <h4 class="font-bold text-navy-900 mb-2">Description</h4>
+                    <p class="text-slate-600 text-sm mb-6 leading-relaxed" x-text="selectedProperty.description"></p>
+
+                    <button @click="detailsModalOpen = false; openInspectionModal(selectedProperty.title)" class="w-full py-4 bg-gold-500 text-navy-950 font-bold rounded-lg hover:bg-gold-600 transition">Request Property Inspection</button>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- 5. INSPECTION MODAL -->
+    <div x-show="inspectionModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="inspectionModalOpen = false" class="bg-white rounded-xl max-w-md w-full p-6">
+            <h3 class="font-heading text-xl font-bold text-navy-900 mb-1">Schedule an Inspection</h3>
+            <p class="text-xs text-slate-500 mb-6" x-text="'Interested property: ' + inspectionTarget"></p>
+
+            <form @submit.prevent="submitInspection()">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
+                        <input type="text" x-model="inspectionForm.name" required class="w-full px-3 py-2 border rounded-md text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
+                        <input type="email" x-model="inspectionForm.email" required class="w-full px-3 py-2 border rounded-md text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
+                        <input type="tel" x-model="inspectionForm.phone" required class="w-full px-3 py-2 border rounded-md text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Preferred Date</label>
+                            <input type="date" x-model="inspectionForm.date" required class="w-full px-3 py-2 border rounded-md text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Preferred Time</label>
+                            <input type="time" x-model="inspectionForm.time" required class="w-full px-3 py-2 border rounded-md text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Additional Message</label>
+                        <textarea x-model="inspectionForm.message" class="w-full px-3 py-2 border rounded-md text-sm h-20"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-sm transition">Submit & Send to WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 6. AUTHENTICATION MODAL -->
+    <div x-show="authModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
+        <div @click.outside="authModalOpen = false" class="bg-white rounded-xl max-w-sm w-full p-6">
+            <h3 class="font-heading text-xl font-bold text-navy-900 mb-4" x-text="authMode === 'login' ? 'Sign In' : 'Create Account'"></h3>
+            <form @submit.prevent="handleAuth()">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Email</label>
+                        <input type="email" x-model="authForm.email" required class="w-full px-3 py-2 border rounded-md text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+                        <input type="password" x-model="authForm.password" required class="w-full px-3 py-2 border rounded-md text-sm">
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-6 py-2.5 bg-navy-900 text-white font-bold rounded-lg text-sm" x-text="authMode === 'login' ? 'Login' : 'Register'"></button>
+            </form>
+            <div class="mt-4 text-center">
+                <button @click="authMode = authMode === 'login' ? 'register' : 'login'" class="text-xs text-gold-600 hover:underline" x-text="authMode === 'login' ? 'Need an account? Register' : 'Already have an account? Login'"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- State Engine -->
+    <script>
+        function realEstateApp() {
+            return {
+                mobileMenuOpen: false,
+                authModalOpen: false,
+                detailsModalOpen: false,
+                inspectionModalOpen: false,
+                dashboardModalOpen: false,
+                authMode: 'login',
+                activeFilter: 'All',
+                activeImageIndex: 0,
+                selectedProperty: null,
+                inspectionTarget: '',
+                favorites: [],
+                user: null,
+
+                authForm: { email: '', password: '' },
+                inspectionForm: { name: '', email: '', phone: '', date: '', time: '', message: '' },
+
+                // Mock Data Engine (Easily syncs to Database)
+                properties: [
+                    {
+                        id: 1,
+                        title: "4 Bedroom Fully Detached Duplex",
+                        category: "Houses",
+                        type: "Residential",
+                        location: "Kyami, Abuja",
+                        price: 120000000,
+                        size: "500 sqm",
+                        bedrooms: 4,
+                        bathrooms: 5,
+                        description: "Modern masterpiece featuring smart home integration, structural finish, ample parking, and fully serviced infrastructure inside Kyami.",
+                        images: [
+                            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+                            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
+                        ]
+                    },
+                    {
+                        id: 2,
+                        title: "Commercial & Residential Plot",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Dei Dei, Abuja",
+                        price: 25000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Prime dry land with verified title deeds. Ideal for residential apartments or commercial warehouse developments.",
+                        images: [
+                            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"
+                        ]
+                    },
+                    {
+                        id: 3,
+                        title: "Luxury 3 Bedroom Apartment",
+                        category: "Apartments",
+                        type: "Residential",
+                        location: "Pyakasa, Abuja",
+                        price: 45000000,
+                        size: "250 sqm",
+                        bedrooms: 3,
+                        bathrooms: 3,
+                        description: "Elegantly finished 3-bedroom apartment with modern fittings, continuous power support, and secure access control.",
+                        images: [
+                            "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80"
+                        ]
+                    }
+                ],
+
+                initApp() {
+                    const saved = localStorage.getItem('fav_properties');
+                    if (saved) this.favorites = JSON.parse(saved);
+                },
+
+                get filteredProperties() {
+                    if (this.activeFilter === 'All') return this.properties;
+                    return this.properties.filter(p => p.category === this.activeFilter || p.type === this.activeFilter);
+                },
+
+                toggleFavorite(id) {
+                    if (this.favorites.includes(id)) {
+                        this.favorites = this.favorites.filter(favId => favId !== id);
+                    } else {
+                        this.favorites.push(id);
+                    }
+                    localStorage.setItem('fav_properties', JSON.stringify(this.favorites));
+                },
+
+                isFavorite(id) {
+                    return this.favorites.includes(id);
+                },
+
+                openDetails(property) {
+                    this.selectedProperty = property;
+                    this.activeImageIndex = 0;
+                    this.detailsModalOpen = true;
+                },
+
+                openInspectionModal(title) {
+                    this.inspectionTarget = title;
+                    this.inspectionModalOpen = true;
+                },
+
+                submitInspection() {
+                    const messageText = `Hello F.O. Amarachi, I am interested in inspecting ${this.inspectionTarget}.\n\nName: ${this.inspectionForm.name}\nEmail: ${this.inspectionForm.email}\nPhone: ${this.inspectionForm.phone}\nPreferred Date: ${this.inspectionForm.date}\nPreferred Time: ${this.inspectionForm.time}\n\nAdditional Message:\n${this.inspectionForm.message}\n\nI would like to schedule an inspection.`;
+                    
+                    const encodedMessage = encodeURIComponent(messageText);
+                    const whatsappUrl = `https://wa.me/2348134644098?text=${encodedMessage}`;
+                    
+                    this.inspectionModalOpen = false;
+                    window.open(whatsappUrl, '_blank');
+                },
+
+                handleAuth() {
+                    // Demo local auth fallback
+                    this.user = { email: this.authForm.email };
+                    this.authModalOpen = false;
+                },
+
+                logout() {
+                    this.user = null;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
