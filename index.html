@@ -44,8 +44,7 @@
         }
     </script>
 
-    <!-- Alpine.js & Supabase JS SDK -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-gold-500 selection:text-white"
@@ -60,7 +59,7 @@
         <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
     </a>
 
-    <!-- 2. NAVIGATION BAR -->
+    <!-- NAVIGATION BAR -->
     <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md border-b border-slate-800 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <a href="#" class="flex flex-col">
@@ -89,7 +88,6 @@
                             <span x-text="user.email.split('@')[0]"></span>
                         </button>
                         <div x-show="open" @click.outside="open = false" class="absolute right-0 mt-2 w-48 bg-navy-900 border border-slate-800 rounded-md shadow-xl py-2">
-                            <button @click="activeTab = 'favorites'; dashboardModalOpen = true; open = false;" class="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-800">Saved Properties</button>
                             <button @click="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-800">Logout</button>
                         </div>
                     </div>
@@ -123,11 +121,10 @@
         </div>
     </header>
 
-    <!-- 1. HERO / LANDING SECTION -->
+    <!-- HERO / LANDING SECTION -->
     <section id="home" class="relative min-h-[85vh] flex items-center justify-center bg-navy-950 text-white">
-        <!-- Overlay Background -->
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-overlay"
-             style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=80');"></div>
+             style="background-image: url('photo_2026-08-17_18-46-44.jpg');"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/60 to-transparent"></div>
 
         <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center py-20">
@@ -138,33 +135,33 @@
                 Find the Right Property.<br><span class="text-gold-champagne">Build the Right Future.</span>
             </h1>
             <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-4 font-light">
-                Premium lands and properties in Abuja, carefully selected to help you own, invest and build with confidence.
+                Premium lands and properties in Abuja & high-growth corridors, selected for secure ownership and high ROI.
             </p>
             <p class="text-sm sm:text-base text-slate-400 mb-10">
-                Explore verified property opportunities with F.O. Amarachi, Business Development Executive at NEFT Properties Abuja.
+                Explore 15 verified residential & commercial listings with F.O. Amarachi, Business Development Executive at NEFT Properties.
             </p>
             
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
                 <a href="#properties" class="w-full sm:w-auto px-8 py-4 bg-gold-500 hover:bg-gold-600 text-navy-950 font-bold rounded-lg transition-all shadow-lg hover:shadow-gold-500/20 text-center">
-                    View Available Properties
+                    View All 15 Properties
                 </a>
-                <button @click="openInspectionModal('General Query')" class="w-full sm:w-auto px-8 py-4 bg-slate-800/80 hover:bg-slate-800 text-white border border-slate-700 font-semibold rounded-lg transition-all backdrop-blur-sm text-center">
+                <button @click="openInspectionModal('General Inquiry')" class="w-full sm:w-auto px-8 py-4 bg-slate-800/80 hover:bg-slate-800 text-white border border-slate-700 font-semibold rounded-lg transition-all backdrop-blur-sm text-center">
                     Request an Inspection
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- 3. PROPERTY LISTINGS SECTION -->
+    <!-- PROPERTY LISTINGS SECTION -->
     <section id="properties" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
-                <h2 class="font-heading text-3xl font-bold text-navy-900">Explore Available Properties</h2>
-                <p class="text-slate-600 mt-2">Browse our curated listing of verified Abuja plots, luxury houses, and commercial spaces.</p>
+                <h2 class="font-heading text-3xl font-bold text-navy-900">Explore All Available Listings</h2>
+                <p class="text-slate-600 mt-2">Showing verified plots, semi-finished structures, and master-planned layouts.</p>
             </div>
             <!-- Category Filters -->
             <div class="mt-6 md:mt-0 flex flex-wrap gap-2">
-                <template x-for="cat in ['All', 'Lands', 'Houses', 'Apartments', 'Commercial', 'Residential']">
+                <template x-for="cat in ['All', 'Lands', 'Houses', 'Commercial', 'Residential']">
                     <button @click="activeFilter = cat" 
                             :class="activeFilter === cat ? 'bg-navy-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'"
                             class="px-4 py-2 rounded-md text-sm font-medium transition-colors"
@@ -186,9 +183,7 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col justify-between">
                         <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="font-bold text-lg text-navy-900 line-clamp-1" x-text="property.title"></h3>
-                            </div>
+                            <h3 class="font-bold text-lg text-navy-900 line-clamp-1 mb-1" x-text="property.title"></h3>
                             <p class="text-sm text-slate-500 mb-3 flex items-center gap-1">
                                 <i class="ph ph-map-pin text-gold-500"></i> <span x-text="property.location"></span>
                             </p>
@@ -214,24 +209,25 @@
         </div>
     </section>
 
-    <!-- 8 & 9. DEDICATED SECTIONS FOR LANDS & HOUSES -->
+    <!-- LANDS HIGHLIGHT SECTION -->
     <section id="lands" class="bg-slate-900 text-white py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-3xl mb-12">
-                <span class="text-gold-400 text-xs font-bold tracking-widest uppercase">Investment Opportunities</span>
-                <h2 class="font-heading text-3xl font-bold mt-2">Secure Your Piece of Abuja</h2>
-                <p class="text-slate-400 mt-2">Strategic plots situated in rapidly expanding development corridors, offering verified land titles and outstanding capital growth prospects.</p>
+                <span class="text-gold-400 text-xs font-bold tracking-widest uppercase">Verified Land Offerings</span>
+                <h2 class="font-heading text-3xl font-bold mt-2">Strategic Plots & Estates</h2>
+                <p class="text-slate-400 mt-2">Explore prime residential and commercial lands across Abuja, Kyami, Dei Dei, Pyakasa, Karshi, and Delta State.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <template x-for="land in properties.filter(p => p.category === 'Lands')" :key="land.id">
+                <template x-for="land in properties.filter(p => p.category === 'Lands').slice(0, 4)" :key="land.id">
                     <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 flex flex-col md:flex-row">
                         <img :src="land.images[0]" :alt="land.title" class="md:w-1/2 h-64 md:h-auto object-cover">
                         <div class="p-6 flex flex-col justify-between md:w-1/2">
                             <div>
                                 <h3 class="font-bold text-xl text-white" x-text="land.title"></h3>
                                 <p class="text-gold-400 font-bold text-lg mt-2" x-text="'₦' + land.price.toLocaleString()"></p>
-                                <p class="text-xs text-slate-400 mt-1" x-text="'Size: ' + land.size"></p>
-                                <p class="text-sm text-slate-300 mt-3" x-text="land.description"></p>
+                                <p class="text-xs text-slate-400 mt-1" x-text="'Location: ' + land.location"></p>
+                                <p class="text-xs text-slate-400" x-text="'Size: ' + land.size"></p>
+                                <p class="text-sm text-slate-300 mt-3 line-clamp-3" x-text="land.description"></p>
                             </div>
                             <button @click="openInspectionModal(land.title)" class="mt-6 w-full py-2.5 bg-gold-500 text-navy-950 font-bold text-sm rounded hover:bg-gold-400 transition">Schedule Land Tour</button>
                         </div>
@@ -241,13 +237,40 @@
         </div>
     </section>
 
-    <!-- 10. ABOUT F.O. AMARACHI -->
-    <section id="about" class="py-20 bg-white">
+    <!-- HOUSES HIGHLIGHT SECTION -->
+    <section id="houses" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mb-12">
+                <span class="text-gold-600 text-xs font-bold tracking-widest uppercase">Housing Developments</span>
+                <h2 class="font-heading text-3xl font-bold text-navy-900 mt-2">Duplexes & Residential Projects</h2>
+                <p class="text-slate-600 mt-2">Invest in semi-finished structures, carcass duplexes, and master-planned residential estates.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <template x-for="house in properties.filter(p => p.category === 'Houses')" :key="house.id">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
+                        <img :src="house.images[0]" :alt="house.title" class="h-48 w-full object-cover">
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-navy-900 text-lg mb-1" x-text="house.title"></h3>
+                                <p class="text-xs text-slate-500 mb-2" x-text="house.location"></p>
+                                <p class="text-xl font-bold text-gold-600 mb-3" x-text="'₦' + house.price.toLocaleString()"></p>
+                                <p class="text-sm text-slate-600 line-clamp-3 mb-4" x-text="house.description"></p>
+                            </div>
+                            <button @click="openInspectionModal(house.title)" class="w-full py-2 bg-navy-900 text-white font-bold text-xs rounded hover:bg-gold-500 hover:text-navy-950 transition">Request Inspection</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT F.O. AMARACHI -->
+    <section id="about" class="py-20 bg-slate-50 border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="relative">
-                    <div class="aspect-w-4 aspect-h-5 rounded-2xl overflow-hidden bg-slate-100 shadow-2xl border-4 border-white">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" alt="F.O. Amarachi - NEFT Properties Abuja" class="w-full h-[500px] object-cover">
+                    <div class="rounded-2xl overflow-hidden bg-slate-100 shadow-2xl border-4 border-white">
+                        <img src="photo_2026-08-17_18-46-44.jpg" alt="F.O. Amarachi - NEFT Properties Abuja" class="w-full h-[500px] object-cover">
                     </div>
                     <div class="absolute -bottom-6 -right-6 bg-navy-900 text-white p-6 rounded-xl shadow-xl hidden sm:block">
                         <p class="font-heading text-xl font-bold text-gold-champagne">NEFT Properties</p>
@@ -259,8 +282,8 @@
                     <h2 class="font-heading text-3xl sm:text-4xl font-bold text-navy-900 mt-2 mb-4">F.O. Amarachi</h2>
                     <p class="text-slate-500 font-medium mb-6">Business Development Executive at NEFT Properties Abuja</p>
                     <div class="space-y-4 text-slate-600 leading-relaxed">
-                        <p>With deep structural insight into the Abuja real estate landscape, I help individuals, families, and corporate investors navigate property acquisition with absolute transparency and confidence.</p>
-                        <p>Whether you are searching for strategic land opportunities in developing corridors or luxury residential structures designed for home ownership, my mandate is to ensure every deal is legally verified, smooth, and aligned with your portfolio goals.</p>
+                        <p>With deep structural insight into the Abuja real estate landscape, I help individuals, families, and corporate investors acquire verified property with absolute transparency and confidence.</p>
+                        <p>Whether you are searching for strategic land opportunities in developing corridors like Kyami, Gui, and Karshi or luxury residential duplexes designed for home ownership, my mandate is to ensure every transaction is smooth and legally sound.</p>
                     </div>
                     <div class="mt-8 flex items-center space-x-4">
                         <a :href="'https://wa.me/2348134644098?text=' + encodeURIComponent('Hello Amarachi, I would like to schedule a personal real estate consultation.')" target="_blank" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md transition flex items-center gap-2">
@@ -273,58 +296,7 @@
         </div>
     </section>
 
-    <!-- 11. WHY WORK WITH US -->
-    <section class="py-20 bg-slate-50 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h2 class="font-heading text-3xl font-bold text-navy-900">Why Work With Us</h2>
-                <p class="text-slate-600 mt-2">Professional, verified, and client-centric real estate solutions in Abuja.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
-                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-shield-check"></i></div>
-                    <h3 class="font-bold text-lg text-navy-900 mb-2">Carefully Selected Properties</h3>
-                    <p class="text-slate-600 text-sm">Explore property opportunities presented with clear information and detailed descriptions.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
-                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-user-focus"></i></div>
-                    <h3 class="font-bold text-lg text-navy-900 mb-2">Professional Guidance</h3>
-                    <p class="text-slate-600 text-sm">Get assistance throughout your property search and decision-making process.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
-                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-calendar-check"></i></div>
-                    <h3 class="font-bold text-lg text-navy-900 mb-2">Property Inspections</h3>
-                    <p class="text-slate-600 text-sm">Request an inspection and arrange a convenient time to physically view a property.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
-                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-buildings"></i></div>
-                    <h3 class="font-bold text-lg text-navy-900 mb-2">Abuja Opportunities</h3>
-                    <p class="text-slate-600 text-sm">Discover land and housing opportunities across strategic locations in Abuja.</p>
-                </div>
-                <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm lg:col-span-2">
-                    <div class="w-12 h-12 bg-gold-500/10 text-gold-600 rounded-lg flex items-center justify-center text-2xl mb-6"><i class="ph ph-handshake"></i></div>
-                    <h3 class="font-bold text-lg text-navy-900 mb-2">Client-Focused Service</h3>
-                    <p class="text-slate-600 text-sm">Make the property search process simple, transparent, and completely convenient from inquiry to execution.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 12. CALL-TO-ACTION SECTION -->
-    <section class="relative py-20 bg-navy-950 text-white overflow-hidden">
-        <div class="relative max-w-5xl mx-auto px-4 text-center z-10">
-            <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-4">Your Next Property Could Be Closer Than You Think.</h2>
-            <p class="text-slate-300 max-w-2xl mx-auto mb-8">Explore available properties or speak directly with F.O. Amarachi about your next real estate opportunity.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#properties" class="px-8 py-4 bg-gold-500 text-navy-950 font-bold rounded-lg hover:bg-gold-400 transition">Explore Properties</a>
-                <a :href="'https://wa.me/2348134644098'" target="_blank" class="px-8 py-4 bg-emerald-600 text-white font-bold rounded-lg hover:bg-emerald-700 transition flex items-center justify-center gap-2">
-                    <i class="ph-bold ph-whatsapp-logo"></i> Chat on WhatsApp
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 13. FOOTER -->
+    <!-- FOOTER -->
     <footer id="contact" class="bg-navy-900 text-slate-400 border-t border-slate-800 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="md:col-span-2">
@@ -352,7 +324,7 @@
         </div>
     </footer>
 
-    <!-- 4 & 5. PROPERTY DETAILS & INSPECTION MODAL -->
+    <!-- PROPERTY DETAILS MODAL -->
     <div x-show="detailsModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
         <div @click.outside="detailsModalOpen = false" class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8">
             <template x-if="selectedProperty">
@@ -366,10 +338,9 @@
                         <button @click="detailsModalOpen = false" class="text-slate-400 hover:text-slate-600 text-2xl"><i class="ph ph-x"></i></button>
                     </div>
 
-                    <!-- Gallery Carousel -->
                     <div class="relative h-80 bg-slate-100 rounded-lg overflow-hidden mb-6">
                         <img :src="selectedProperty.images[activeImageIndex]" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 flex justify-between items-center px-4">
+                        <div class="absolute inset-0 flex justify-between items-center px-4" x-show="selectedProperty.images.length > 1">
                             <button @click="activeImageIndex = (activeImageIndex - 1 + selectedProperty.images.length) % selectedProperty.images.length" class="p-2 bg-black/50 text-white rounded-full"><i class="ph ph-caret-left"></i></button>
                             <button @click="activeImageIndex = (activeImageIndex + 1) % selectedProperty.images.length" class="p-2 bg-black/50 text-white rounded-full"><i class="ph ph-caret-right"></i></button>
                         </div>
@@ -391,7 +362,7 @@
         </div>
     </div>
 
-    <!-- 5. INSPECTION MODAL -->
+    <!-- INSPECTION MODAL -->
     <div x-show="inspectionModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
         <div @click.outside="inspectionModalOpen = false" class="bg-white rounded-xl max-w-md w-full p-6">
             <h3 class="font-heading text-xl font-bold text-navy-900 mb-1">Schedule an Inspection</h3>
@@ -431,29 +402,6 @@
         </div>
     </div>
 
-    <!-- 6. AUTHENTICATION MODAL -->
-    <div x-show="authModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-sm" x-cloak>
-        <div @click.outside="authModalOpen = false" class="bg-white rounded-xl max-w-sm w-full p-6">
-            <h3 class="font-heading text-xl font-bold text-navy-900 mb-4" x-text="authMode === 'login' ? 'Sign In' : 'Create Account'"></h3>
-            <form @submit.prevent="handleAuth()">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Email</label>
-                        <input type="email" x-model="authForm.email" required class="w-full px-3 py-2 border rounded-md text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
-                        <input type="password" x-model="authForm.password" required class="w-full px-3 py-2 border rounded-md text-sm">
-                    </div>
-                </div>
-                <button type="submit" class="w-full mt-6 py-2.5 bg-navy-900 text-white font-bold rounded-lg text-sm" x-text="authMode === 'login' ? 'Login' : 'Register'"></button>
-            </form>
-            <div class="mt-4 text-center">
-                <button @click="authMode = authMode === 'login' ? 'register' : 'login'" class="text-xs text-gold-600 hover:underline" x-text="authMode === 'login' ? 'Need an account? Register' : 'Already have an account? Login'"></button>
-            </div>
-        </div>
-    </div>
-
     <!-- State Engine -->
     <script>
         function realEstateApp() {
@@ -462,7 +410,6 @@
                 authModalOpen: false,
                 detailsModalOpen: false,
                 inspectionModalOpen: false,
-                dashboardModalOpen: false,
                 authMode: 'login',
                 activeFilter: 'All',
                 activeImageIndex: 0,
@@ -474,53 +421,212 @@
                 authForm: { email: '', password: '' },
                 inspectionForm: { name: '', email: '', phone: '', date: '', time: '', message: '' },
 
-                // Mock Data Engine (Easily syncs to Database)
+                // All 15 Property Listings
                 properties: [
                     {
                         id: 1,
-                        title: "4 Bedroom Fully Detached Duplex",
-                        category: "Houses",
-                        type: "Residential",
-                        location: "Kyami, Abuja",
-                        price: 120000000,
-                        size: "500 sqm",
-                        bedrooms: 4,
-                        bathrooms: 5,
-                        description: "Modern masterpiece featuring smart home integration, structural finish, ample parking, and fully serviced infrastructure inside Kyami.",
-                        images: [
-                            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
-                            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-                        ]
-                    },
-                    {
-                        id: 2,
-                        title: "Commercial & Residential Plot",
+                        title: "NEFT Estate Gatehouse & Commercial Plot",
                         category: "Lands",
-                        type: "Lands",
-                        location: "Dei Dei, Abuja",
-                        price: 25000000,
+                        type: "Commercial",
+                        location: "NEFT Estate, Abuja",
+                        price: 35000000,
                         size: "600 sqm",
                         bedrooms: null,
                         bathrooms: null,
-                        description: "Prime dry land with verified title deeds. Ideal for residential apartments or commercial warehouse developments.",
+                        description: "Prime estate entrance plot featuring modern security gatehouse, paved access roads, and ongoing drainage infrastructure.",
+                        images: ["photo_2026-08-17_18-46-44.jpg"]
+                    },
+                    {
+                        id: 2,
+                        title: "Ongoing 4-Bedroom Duplex Project",
+                        category: "Houses",
+                        type: "Residential",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 65000000,
+                        size: "500 sqm",
+                        bedrooms: 4,
+                        bathrooms: 4,
+                        description: "Active building project at lintel and blockwork levels situated in a rapidly growing, accessible layout in Gui.",
                         images: [
-                            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"
+                            "photo_2026-08-18_09-23-04 - Copy - Copy.jpg",
+                            "photo_2026-08-18_09-23-04.jpg",
+                            "photo_2026-08-18_10-55-47 - Copy.jpg"
                         ]
                     },
                     {
                         id: 3,
-                        title: "Luxury 3 Bedroom Apartment",
-                        category: "Apartments",
+                        title: "Master-Planned 5-Bed Estate Duplex Plot",
+                        category: "Houses",
+                        type: "Residential",
+                        location: "Abuja Hills Layout",
+                        price: 85000000,
+                        size: "1000 sqm",
+                        bedrooms: 5,
+                        bathrooms: 6,
+                        description: "Elevated aerial overview plot surrounded by ongoing multi-unit luxury duplexes and estate recreation facilities.",
+                        images: ["photo_2026-08-18_10-52-41 - Copy.jpg"]
+                    },
+                    {
+                        id: 4,
+                        title: "Prime Access Dry Land Plot",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 18000000,
+                        size: "500 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Wide access road layout with clear mountain views and surrounding active residential developments.",
+                        images: [
+                            "photo_2026-08-18_10-55-50_2.jpg",
+                            "photo_2026-08-18_10-55-53_2.jpg"
+                        ]
+                    },
+                    {
+                        id: 5,
+                        title: "Hillview Prime Investment Plot",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 22000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Expansive plot layout with excellent topography, perfect for capital appreciation or immediate building.",
+                        images: [
+                            "photo_2026-08-18_10-55-57 - Copy.jpg",
+                            "photo_2026-08-18_10-55-59_2.jpg"
+                        ]
+                    },
+                    {
+                        id: 6,
+                        title: "Serviced Plot with Raft Foundation Started",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 28000000,
+                        size: "550 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Property site with ground works completed and raft foundation commenced, cutting down builder setup time.",
+                        images: ["photo_2026-08-18_10-56-02_2.jpg"]
+                    },
+                    {
+                        id: 7,
+                        title: "Estate Sector Access Plot",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 16500000,
+                        size: "450 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Well-graded access layout with clear boundary demarcations in a fast-expanding neighborhood corridor.",
+                        images: ["photo_2026-08-18_10-56-05_2.jpg"]
+                    },
+                    {
+                        id: 8,
+                        title: "Hillside View Residential Plot",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 19500000,
+                        size: "500 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Strategic residential plot offering scenic mountain vistas, clean soil structure, and near-term grid connection.",
+                        images: ["photo_2026-08-18_10-56-07_2.jpg"]
+                    },
+                    {
+                        id: 9,
+                        title: "Cornerpiece Residential Parcel",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 24000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Desirable cornerpiece positioning allowing dual-access designs for detached duplexes or block units.",
+                        images: ["photo_2026-08-18_10-56-10_2.jpg"]
+                    },
+                    {
+                        id: 10,
+                        title: "Elevated Building Site",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 21000000,
+                        size: "500 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Solid high-ground land with natural drainage, surrounded by new residential developments.",
+                        images: ["photo_2026-08-18_10-56-13.jpg"]
+                    },
+                    {
+                        id: 11,
+                        title: "Foundation & Excavation Plot",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Gui, Abuja, Nigeria",
+                        price: 26000000,
+                        size: "500 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Ongoing building plot featuring column rebar preparation and footing trenches already underway.",
+                        images: ["photo_2026-08-18_10-56-16.jpg"]
+                    },
+                    {
+                        id: 12,
+                        title: "Kyami Corridor Premium Residential Plot",
+                        category: "Lands",
+                        type: "Residential",
+                        location: "Kyami, Abuja",
+                        price: 32000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "High-value plot situated in the rapid-growth Kyami corridor, close to major highway links and institutional hubs.",
+                        images: ["photo_2026-08-17_18-46-44.jpg"]
+                    },
+                    {
+                        id: 13,
+                        title: "Dei Dei Commercial & Storage Land",
+                        category: "Lands",
+                        type: "Commercial",
+                        location: "Dei Dei, Abuja",
+                        price: 45000000,
+                        size: "1200 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Large parcel suited for commercial warehousing, logistics, or light industrial setups in bustling Dei Dei.",
+                        images: ["photo_2026-08-18_10-56-05_2.jpg"]
+                    },
+                    {
+                        id: 14,
+                        title: "Pyakasa Fast-Growth Residential Plot",
+                        category: "Lands",
                         type: "Residential",
                         location: "Pyakasa, Abuja",
-                        price: 45000000,
-                        size: "250 sqm",
-                        bedrooms: 3,
-                        bathrooms: 3,
-                        description: "Elegantly finished 3-bedroom apartment with modern fittings, continuous power support, and secure access control.",
-                        images: [
-                            "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80"
-                        ]
+                        price: 15000000,
+                        size: "450 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Accessible residential land in Pyakasa with high rental yield potential upon completion.",
+                        images: ["photo_2026-08-18_10-56-07_2.jpg"]
+                    },
+                    {
+                        id: 15,
+                        title: "Karshi Investment Estate Layout",
+                        category: "Lands",
+                        type: "Lands",
+                        location: "New Karshi, Abuja Environs",
+                        price: 12000000,
+                        size: "600 sqm",
+                        bedrooms: null,
+                        bathrooms: null,
+                        description: "Affordable land layout perfect for land banking or medium-term residential development.",
+                        images: ["photo_2026-08-18_10-56-10_2.jpg"]
                     }
                 ],
 
@@ -569,7 +675,6 @@
                 },
 
                 handleAuth() {
-                    // Demo local auth fallback
                     this.user = { email: this.authForm.email };
                     this.authModalOpen = false;
                 },
